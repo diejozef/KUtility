@@ -1,0 +1,297 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Wards.cpp">
+      <Filter>Wards</Filter>
+    </ClCompile>
+    <ClCompile Include="Spells.cpp">
+      <Filter>Spells</Filter>
+    </ClCompile>
+    <ClCompile Include="WardManager.cpp">
+      <Filter>Wards</Filter>
+    </ClCompile>
+    <ClCompile Include="SpellManager.cpp">
+      <Filter>Spells</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawManager.cpp">
+      <Filter>Drawings</Filter>
+    </ClCompile>
+    <ClCompile Include="FowTracker.cpp">
+      <Filter>Drawings</Filter>
+    </ClCompile>
+    <ClCompile Include="Smite.cpp">
+      <Filter>Activator\Smite</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Activator.cpp">
+      <Filter>Activator</Filter>
+    </ClCompile>
+    <ClCompile Include="Ignite.cpp">
+      <Filter>Activator\Ignite</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoMute.cpp">
+      <Filter>AutoMute</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\PluginSDK.cpp">
+      <Filter>SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\KLib.cpp">
+      <Filter>SDK\KLib</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\SpellDatabase.cpp">
+      <Filter>SpellDatabase</Filter>
+    </ClCompile>
+    <ClCompile Include="Cleanse.cpp">
+      <Filter>Activator\Cleanse</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoBuy.cpp">
+      <Filter>Activator\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoLevelUp.cpp">
+      <Filter>Activator\AutoLevelUp</Filter>
+    </ClCompile>
+    <ClCompile Include="JungleManager.cpp">
+      <Filter>Jungle</Filter>
+    </ClCompile>
+    <ClCompile Include="JungleTracker.cpp">
+      <Filter>Jungle</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="SpellInfoBox.cpp">
+      <Filter>Drawings\SpellInfoBox</Filter>
+    </ClCompile>
+    <ClCompile Include="SpellTracker.cpp">
+      <Filter>Drawings\SpellTracker</Filter>
+    </ClCompile>
+    <ClCompile Include="Passives.cpp">
+      <Filter>Drawings\Passives</Filter>
+    </ClCompile>
+    <ClCompile Include="LastPositions.cpp">
+      <Filter>Drawings\LastPositions</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingBox.cpp">
+      <Filter>Drawings\BoundingBox</Filter>
+    </ClCompile>
+    <ClCompile Include="TurretRanges.cpp">
+      <Filter>Drawings\TurretRanges</Filter>
+    </ClCompile>
+    <ClCompile Include="Clicks.cpp">
+      <Filter>Drawings\Clicks</Filter>
+    </ClCompile>
+    <ClCompile Include="Clones.cpp">
+      <Filter>Drawings\Clones</Filter>
+    </ClCompile>
+    <ClCompile Include="AARange.cpp">
+      <Filter>Drawings\AARange</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\KDrawing.cpp">
+      <Filter>SDK\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="RecallTracker.cpp">
+      <Filter>Drawings\RecallTracker</Filter>
+    </ClCompile>
+    <ClCompile Include="RecallManager.cpp">
+      <Filter>Drawings\RecallTracker</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Wards.hpp">
+      <Filter>Wards</Filter>
+    </ClInclude>
+    <ClInclude Include="Spells.hpp">
+      <Filter>Spells</Filter>
+    </ClInclude>
+    <ClInclude Include="WardManager.hpp">
+      <Filter>Wards</Filter>
+    </ClInclude>
+    <ClInclude Include="SpellManager.hpp">
+      <Filter>Spells</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawManager.hpp">
+      <Filter>Drawings</Filter>
+    </ClInclude>
+    <ClInclude Include="FowTracker.hpp">
+      <Filter>Drawings</Filter>
+    </ClInclude>
+    <ClInclude Include="Smite.hpp">
+      <Filter>Activator\Smite</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.hpp">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Activator.hpp">
+      <Filter>Activator</Filter>
+    </ClInclude>
+    <ClInclude Include="Ignite.hpp">
+      <Filter>Activator\Ignite</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoMute.hpp">
+      <Filter>AutoMute</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\Color.hpp">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\LPPConstants.h">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\PluginData.h">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\PluginSDK.h">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\Vector.hpp">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\KLib.hpp">
+      <Filter>SDK\KLib</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\SpellDatabase.hpp">
+      <Filter>SpellDatabase</Filter>
+    </ClInclude>
+    <ClInclude Include="Cleanse.hpp">
+      <Filter>Activator\Cleanse</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoBuy.hpp">
+      <Filter>Activator\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoLevelUp.hpp">
+      <Filter>Activator\AutoLevelUp</Filter>
+    </ClInclude>
+    <ClInclude Include="JungleManager.hpp">
+      <Filter>Jungle</Filter>
+    </ClInclude>
+    <ClInclude Include="JungleTracker.hpp">
+      <Filter>Jungle</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.hpp">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="SpellInfoBox.hpp">
+      <Filter>Drawings\SpellInfoBox</Filter>
+    </ClInclude>
+    <ClInclude Include="SpellTracker.hpp">
+      <Filter>Drawings\SpellTracker</Filter>
+    </ClInclude>
+    <ClInclude Include="Passives.hpp">
+      <Filter>Drawings\Passives</Filter>
+    </ClInclude>
+    <ClInclude Include="LastPositions.hpp">
+      <Filter>Drawings\LastPositions</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingBox.hpp">
+      <Filter>Drawings\BoundingBox</Filter>
+    </ClInclude>
+    <ClInclude Include="TurretRanges.hpp">
+      <Filter>Drawings\TurretRanges</Filter>
+    </ClInclude>
+    <ClInclude Include="Clicks.hpp">
+      <Filter>Drawings\Clicks</Filter>
+    </ClInclude>
+    <ClInclude Include="Clones.hpp">
+      <Filter>Drawings\Clones</Filter>
+    </ClInclude>
+    <ClInclude Include="AARange.hpp">
+      <Filter>Drawings\AARange</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\KDrawing.hpp">
+      <Filter>SDK\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="RecallTracker.hpp">
+      <Filter>Drawings\RecallTracker</Filter>
+    </ClInclude>
+    <ClInclude Include="RecallManager.hpp">
+      <Filter>Drawings\RecallTracker</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Main">
+      <UniqueIdentifier>{b99d1621-478e-4906-92ef-113a35a8d37f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Wards">
+      <UniqueIdentifier>{36aea133-834b-4fda-a67e-cbbfb95f0be3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Spells">
+      <UniqueIdentifier>{6328289b-a852-482b-9101-c6f3bd679809}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SDK">
+      <UniqueIdentifier>{45c9106c-d605-4bf7-969d-1e9358ffadf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drawings">
+      <UniqueIdentifier>{e86c2dc6-1c21-489b-989d-25a0d679b3fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SpellDatabase">
+      <UniqueIdentifier>{6e5ab3b6-4048-4f80-8883-b998814f2a23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Activator">
+      <UniqueIdentifier>{1a26fb67-75b6-4f05-a590-3537aaeba407}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Activator\Smite">
+      <UniqueIdentifier>{32bd8154-7414-4fff-b111-b33af909e7c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Activator\Ignite">
+      <UniqueIdentifier>{86c39759-33ab-4720-8659-880a8854b12f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Activator\Items">
+      <UniqueIdentifier>{4f3ef819-6176-4811-be65-46e91a7165fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AutoMute">
+      <UniqueIdentifier>{237fe5b2-9f68-4cd9-8551-7c7c44277889}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SDK\KLib">
+      <UniqueIdentifier>{7813d5eb-f8df-456a-b29e-49f02ecd3d46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Activator\Cleanse">
+      <UniqueIdentifier>{3e8d5ca5-1711-4b84-ae94-c5a7ca9bc90c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Activator\AutoLevelUp">
+      <UniqueIdentifier>{7c9ba59b-9fa3-42c3-89fb-ca73ad2037d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Jungle">
+      <UniqueIdentifier>{b8ff6c61-7e71-4ceb-805f-ce5d86b5993a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{b4fa744b-2f9e-4b16-9ed3-a7fe1ddb1709}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drawings\SpellInfoBox">
+      <UniqueIdentifier>{52099db9-d094-40b1-ad82-cea7094a8164}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drawings\AARange">
+      <UniqueIdentifier>{4074005d-ff4e-4a93-befa-c7e6d6c4482b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drawings\TurretRanges">
+      <UniqueIdentifier>{839747b8-e335-4d0d-86f7-9eed20c8e5bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drawings\SpellTracker">
+      <UniqueIdentifier>{d0faa00b-396d-4229-a9d3-ee6de6d510aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drawings\LastPositions">
+      <UniqueIdentifier>{9b84eee2-6746-4467-9994-45952ff21359}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drawings\Passives">
+      <UniqueIdentifier>{8169fdd8-e57e-489c-9989-9e5e4e84a33a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drawings\BoundingBox">
+      <UniqueIdentifier>{c91971f8-a89c-491f-93fd-7eefa41cb452}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drawings\Clones">
+      <UniqueIdentifier>{f36e8fc0-ad3d-4ef2-9132-ab47054c1bf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drawings\Clicks">
+      <UniqueIdentifier>{6886fb69-60a1-47c8-b51e-74d4dbed8f55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SDK\Render">
+      <UniqueIdentifier>{a22b6ea3-2ccf-4ca1-999c-35d77614379f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drawings\RecallTracker">
+      <UniqueIdentifier>{6f68fb55-4521-40ab-b346-308e22fbf036}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
