@@ -2,32 +2,34 @@
 
 Utility* g_pUtility = nullptr;
 
-Utility::Utility( IUnit* player ) :
-	m_pPlayer( player )
+Utility::Utility(IUnit* player) :
+	m_pPlayer(player)
 {
-	m_pMenu = GPluginSDK->AddMenu( "KUtility" );
+	m_pMenu = GPluginSDK->AddMenu("KUtility");
 
 	m_pInputManager = new InputManager();
 
-	m_pWardManager = new WardManager( m_pMenu, m_pPlayer );
-	m_pDrawManager = new DrawManager( m_pMenu, m_pPlayer, m_pInputManager );
-	m_pJungleManager = new JungleManager( m_pMenu );
-	m_pSpellManager = new SpellManager( m_pMenu, m_pPlayer );
-	m_pActivator = new Activator( m_pMenu, m_pPlayer );
-	m_pAutoMute = new AutoMute( m_pMenu );
+	m_pWardManager = new WardManager(m_pMenu, m_pPlayer);
+	m_pDrawManager = new DrawManager(m_pMenu, m_pPlayer, m_pInputManager);
+	m_pJungleManager = new JungleManager(m_pMenu);
+	m_pSpellManager = new SpellManager(m_pMenu, m_pPlayer);
+	m_pActivator = new Activator(m_pMenu, m_pPlayer, m_pInputManager);
+	m_pAutoMute = new AutoMute(m_pMenu);
+	m_pSkinChanger = new SkinChanger(m_pMenu, m_pPlayer);
 
-	GRender->NotificationEx( Color::LightBlue().Get(), 2, false, true, "KUtility loaded!" );
+	GRender->NotificationEx(Color::LightBlue().Get(), 2, true, true, "KUtility loaded!");
 }
 
 Utility::~Utility()
 {
-	_delete( m_pWardManager );
-	_delete( m_pDrawManager );
-	_delete( m_pJungleManager );
-	_delete( m_pSpellManager );
-	_delete( m_pActivator );
-	_delete( m_pAutoMute );
-	_delete( m_pInputManager );
+	_delete(m_pWardManager);
+	_delete(m_pDrawManager);
+	_delete(m_pJungleManager);
+	_delete(m_pSpellManager);
+	_delete(m_pActivator);
+	_delete(m_pAutoMute);
+	_delete(m_pSkinChanger);
+	_delete(m_pInputManager);
 
 	m_pMenu->SaveSettings();
 	m_pMenu->Remove();
@@ -39,7 +41,7 @@ auto Utility::OnGameUpdate() -> void
 	m_pActivator->OnUpdate();
 	m_pDrawManager->OnUpdate();
 	m_pJungleManager->OnUpdate();
-	m_pWardManager->OnUpdate();
+	m_pSkinChanger->OnUpdate();
 }
 
 auto Utility::OnRender() -> void
@@ -56,69 +58,85 @@ auto Utility::OnRender2() -> void
 
 }
 
-auto Utility::OnCreateObject( IUnit* object ) -> void
+auto Utility::OnCreateObject(IUnit* object) -> void
 {
-	if ( object == nullptr )
+	if (object == nullptr)
 		return;
 
-	m_pSpellManager->OnCreateObject( object );
-	m_pWardManager->OnCreateObject( object );
+	m_pSpellManager->OnCreateObject(object);
+	m_pWardManager->OnCreateObject(object);
+	m_pActivator->OnCreateObject(object);
 }
 
-auto Utility::OnDestroyObject( IUnit* object ) -> void
+auto Utility::OnDestroyObject(IUnit* object) -> void
 {
-	if ( object == nullptr )
+	if (object == nullptr)
 		return;
 
-	m_pSpellManager->OnDestroyObject( object );
+	m_pWardManager->OnDestroyObject(object);
+	m_pSpellManager->OnDestroyObject(object);
+	m_pActivator->OnDestroyObject(object);
 }
 
-auto Utility::OnUnitDeath( IUnit* unit ) -> void
+auto Utility::OnUnitDeath(IUnit* unit) -> void
 {
-	if ( unit == nullptr )
+	if (unit == nullptr)
 		return;
 
-	m_pWardManager->OnUnitDeath( unit );
-	m_pDrawManager->OnUnitDeath( unit );
+	m_pWardManager->OnUnitDeath(unit);
+	m_pDrawManager->OnUnitDeath(unit);
 }
 
-auto Utility::OnEnterFow( IUnit* unit ) -> void
+auto Utility::OnEnterFow(IUnit* unit) -> void
 {
-	m_pDrawManager->OnEnterFow( unit );
+	if (unit == nullptr)
+		return;
+
+	m_pWardManager->OnEnterFow(unit);
+	m_pDrawManager->OnEnterFow(unit);
 }
 
-auto Utility::OnExitFow( IUnit* unit ) -> void
+auto Utility::OnExitFow(IUnit* unit) -> void
 {
-	m_pDrawManager->OnExitFow( unit );
+	if (unit == nullptr)
+		return;
+
+	m_pDrawManager->OnExitFow(unit);
 }
 
-auto Utility::OnBuffAdd( IUnit* source, void* data ) -> void
+auto Utility::OnBuffAdd(IUnit* source, void* data) -> void
 {
-	m_pActivator->OnBuffAdd( source, data );
+	if (source == nullptr || data == nullptr)
+		return;
+
+	m_pActivator->OnBuffAdd(source, data);
 }
 
-auto Utility::OnLevelUp( IUnit* source, int level ) -> void
+auto Utility::OnLevelUp(IUnit* source, int level) -> void
 {
-	m_pActivator->OnLevelUp( source, level );
+	if (source == nullptr)
+		return;
+
+	m_pActivator->OnLevelUp(source, level);
 }
 
-auto Utility::OnJungleNotify( JungleNotifyData* data ) -> void
+auto Utility::OnJungleNotify(JungleNotifyData* data) -> void
 {
-	m_pJungleManager->OnJungleNotify( data );
+	m_pJungleManager->OnJungleNotify(data);
 }
 
-auto Utility::OnTeleport( OnTeleportArgs* data ) -> void
+auto Utility::OnTeleport(OnTeleportArgs* data) -> void
 {
-	m_pDrawManager->OnTeleport( data );
+	m_pDrawManager->OnTeleport(data);
 }
 
-auto Utility::OnWndProc( HWND wnd, UINT message, WPARAM wparam, LPARAM lparam ) -> bool
+auto Utility::OnWndProc(HWND wnd, UINT message, WPARAM wparam, LPARAM lparam) -> bool
 {
-	return m_pInputManager->OnWndProc( wnd, message, wparam, lparam );
+	return m_pInputManager->OnWndProc(wnd, message, wparam, lparam);
 }
 
-auto Utility::OnSpellCast( CastedSpell const& spell ) -> void
+auto Utility::OnSpellCast(const CastedSpell& spell) -> void
 {
-	m_pSpellManager->OnSpellCast( spell );
-	m_pWardManager->OnSpellCast( spell );
+	m_pSpellManager->OnSpellCast(spell);
+	m_pWardManager->OnSpellCast(spell);
 }

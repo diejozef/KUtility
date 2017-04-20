@@ -1,79 +1,38 @@
 #include "SpellInfoBox.hpp"
 
-SpellInfoBox::SpellInfoBox( IMenu* parentMenu, std::vector<FowTracker>* trackers, InputManager* inputManager ) :
-	m_pTrackers( trackers ),
-	m_pInputManager( inputManager ),
-	m_iWidth( 325 ),
-	m_iLineHeight( 18 )
+SpellInfoBox::SpellInfoBox(IMenu* parentMenu,
+						   std::unordered_map<int, FowTracker>* trackers,
+						   std::unordered_map<std::string, ITexture*>* textures,
+						   InputManager* inputManager,
+						   CooldownManager* cooldownManager) :
+	m_iWidth(325),
+	m_iLineHeight(18),
+	m_pFowTrackers(trackers),
+	m_pTextures(textures),
+	m_pInputManager(inputManager),
+	m_pCooldownManager(cooldownManager)
 {
-	m_pMenu = parentMenu->AddMenu( "Info Box" );
-	m_pDraw = m_pMenu->CheckBox( "Enable", false );
+	m_pMenu = parentMenu->AddMenu("Info Box");
+	m_pDraw = m_pMenu->CheckBox("Enable", false);
 
 	m_vecScreenSize = GRender->ScreenSize();
 
-	m_pPosX = m_pMenu->AddInteger( "X", 0, m_vecScreenSize.x, 0 );
-	m_pPosY = m_pMenu->AddInteger( "Y", 0, m_vecScreenSize.y, 0 );
+	m_pPosX = m_pMenu->AddInteger("X", 0, m_vecScreenSize.x, 0);
+	m_pPosY = m_pMenu->AddInteger("Y", 0, m_vecScreenSize.y, 0);
 
-	auto enemies = GEntityList->GetAllHeros( false, true );
+	auto enemies = GEntityList->GetAllHeros(false, true);
 	m_iHeight = m_iLineHeight * enemies.size();
 
-	for ( auto hero : enemies )
+	std::for_each(enemies.begin(), enemies.end(), [&](IUnit* hero)
 	{
-		if ( hero == nullptr )
-			continue;
-
-		char fileName[ 64 ]{ '\0' };
-		auto summonerSpellName = std::string( "" );
-
-		for ( auto i = static_cast< int >( kSummonerSlot1 ); i <= static_cast< int >( kSummonerSlot2 ); i++ )
+		std::array<const char*, 2> summoners{ hero->GetSpellName(kSlotSummoner1), hero->GetSpellName(kSlotSummoner2) };
+		std::sort(summoners.begin(), summoners.end(), [](const char* name1, const char* name2)
 		{
-			summonerSpellName = std::string( hero->GetSpellName( i ) );
-			sprintf_s( fileName, "%s.png", summonerSpellName.c_str() );
+			return !strcmp(name1, "SummonerFlash") > !strcmp(name2, "SummonerFlash");
+		});
 
-			if ( m_mapTextures.find( summonerSpellName ) == m_mapTextures.end() )
-			{
-				auto texture = GRender->CreateTextureFromFile( fileName );
-
-				if ( texture->GetSize().y == 0.0f )
-				{
-					char text[ 64 ];
-					sprintf_s( text, "[KUtility] Missing texture: %s", fileName );
-					GGame->PrintChat( text );
-				}
-				else
-				{
-					texture->Resize( 14, 15 );
-					m_mapTextures[ summonerSpellName ] = texture;
-				}
-			}
-		}
-	}
-
-	// non-default smite textures
-	std::array<std::pair<std::string, std::string>, 2> smiteArray{
-		std::make_pair( "S5_SummonerSmiteDuel", "S5_SummonerSmiteDuel.png" ),
-		std::make_pair( "S5_SummonerSmitePlayerGanker", "S5_SummonerSmitePlayerGanker.png" )
-	};
-
-	for ( auto smite : smiteArray )
-	{
-		if ( m_mapTextures.find( std::get<0>( smite ) ) != m_mapTextures.end() )
-			continue;
-
-		auto texture = GRender->CreateTextureFromFile( std::get<1>( smite ).c_str() );
-
-		if ( texture->GetSize().y == 0.0f )
-		{
-			char text[ 64 ];
-			sprintf_s( text, "[KUtility] Missing texture: %s", std::get<1>( smite ).c_str() );
-			GGame->PrintChat( text );
-		}
-		else
-		{
-			texture->Resize( 14, 15 );
-			m_mapTextures[ std::get<0>( smite ) ] = texture;
-		}
-	}
+		m_mapSummoners[hero->GetNetworkId()] = summoners;
+	});
 }
 
 SpellInfoBox::~SpellInfoBox()
@@ -83,7 +42,7 @@ SpellInfoBox::~SpellInfoBox()
 
 auto SpellInfoBox::OnUpdate() -> void
 {
-	if ( !m_pDraw->Enabled() )
+	if (!m_pDraw->Enabled())
 		return;
 
 	HandleDrag();
@@ -91,177 +50,132 @@ auto SpellInfoBox::OnUpdate() -> void
 
 auto SpellInfoBox::OnRender() -> void
 {
-	if ( !m_pDraw->Enabled() )
+	if (!m_pDraw->Enabled())
 		return;
 
-	int xPos = m_pPosX->GetInteger();
-	int yPos = m_pPosY->GetInteger();
-	static int lineTextOffset = 1;
+	auto xPos = m_pPosX->GetInteger();
+	auto yPos = m_pPosY->GetInteger();
+	static auto lineTextOffset = 1;
 
-	int line = 0;
+	auto line = 0U;
 
-	for ( auto hero : GEntityList->GetAllHeros( false, true ) )
+	for (auto hero : GEntityList->GetAllHeros(false, true))
 	{
-		if ( hero == nullptr )
+		if (hero == nullptr)
 			continue;
 
-		auto fowTracker = std::find_if( m_pTrackers->begin(), m_pTrackers->end(), [&]( const FowTracker& champ ) -> bool
-		{
-			if ( champ.Unit() == hero )
-				return true;
-
-			return false;
-		} );
+		auto fowTracker = (*m_pFowTrackers)[hero->GetNetworkId()];
 
 		// Background
-		auto clr = Color( 0, 0, 0 );
+		auto clr = Color(0, 0, 0);
+		clr = hero->HealthPercent() > 50.0f ? Color::LightBlue2() : hero->HealthPercent() > 20.0f ? Color::Orange2() : Color::LightRed();
 
-		clr = hero->HealthPercent() > 50.0f ? Color::LightGreen() : hero->HealthPercent() > 20.0f ? Color::Orange() : Color::LightRed();
+		GRender->DrawFilledBox(Vec2(xPos, (yPos + line * m_iLineHeight) - 2),
+							   Vec2(m_iWidth, m_iLineHeight),
+							   Color::Black().Get(130));
 
-		GRender->DrawFilledBox( Vec2( xPos, ( yPos + line * m_iLineHeight ) - 2 ), 
-								Vec2( m_iWidth, m_iLineHeight ), 
-								Color::Black().Get( 130 ) );
-
-		GRender->DrawFilledBox( Vec2( xPos + 1, ( yPos + 1 + line * m_iLineHeight ) - 2 ), 
-								Vec2( ( ( m_iWidth - 2 ) * ( hero->HealthPercent() * 0.01f ) ), m_iLineHeight - 2 ), 
-								clr.Get( 50 ) );
+		GRender->DrawFilledBox(Vec2(xPos + 1, (yPos + 1 + line * m_iLineHeight) - 2),
+							   Vec2(((m_iWidth - 2) * (hero->HealthPercent() * 0.01f)), m_iLineHeight - 2),
+							   clr.Get(50));
 
 		// 1st column
 		clr = hero->IsDead() ? Color::DarkGrey() : !hero->IsVisible() ? Color::Yellow() : Color::White();
 
-		char text[ 64 ]{ '\0' };
+		char text[64]{ '\0' };
 
-		if ( !fowTracker->InFow() || hero->IsVisible() )
-			KDrawing::DrawString(	Vec2( xPos + 5, ( yPos + line * m_iLineHeight - lineTextOffset ) ), 
-									clr, true, "%s", hero->ChampionName() );
+		if (!fowTracker.InFow() || hero->IsVisible())
+			KDrawing::DrawString(Vec2(xPos + 5, (yPos + line * m_iLineHeight - lineTextOffset)),
+								 clr, true, "%s", hero->ChampionName());
 		else
-			KDrawing::DrawString(	Vec2( xPos + 5, ( yPos + line * m_iLineHeight - lineTextOffset ) ), 
-									clr, true, "%s(%.0f)", hero->ChampionName(), ( GGame->Time() - fowTracker->Time() ) );
+			KDrawing::DrawString(Vec2(xPos + 5, (yPos + line * m_iLineHeight - lineTextOffset)),
+								 clr, true, "%s(%.0f)", hero->ChampionName(), (GGame->Time() - fowTracker.Time()));
 
 		// 2nd column
-		strcpy_s( text, "[R RDY]" );
+		strcpy_s(text, "[R RDY]");
 
-		auto ready = hero->GetSpellRemainingCooldown( kSlotR ) < 1.f;
+		auto ready = hero->GetSpellRemainingCooldown(kSlotR) < 1.f;
 
-		if ( !ready )
-			sprintf_s( text, "[R %.0f]", hero->GetSpellRemainingCooldown( kSlotR ) );
+		if (!ready)
+			sprintf_s(text, "[R %.0f]", hero->GetSpellRemainingCooldown(kSlotR));
 
 		clr = ready ? Color::LightGreen() : Color::Yellow();
 
-		if ( hero->GetSpellLevel( kSlotR ) < 1 )
+		if (hero->GetSpellLevel(kSlotR) < 1)
 		{
-			strcpy_s( text, "[R]" );
+			strcpy_s(text, "[R]");
 			clr = Color::LightRed();
 		}
 
-		KDrawing::DrawString( Vec2( xPos + 110, yPos + line * m_iLineHeight - lineTextOffset ), clr, true, text );
+		KDrawing::DrawString(Vec2(xPos + 110, yPos + line * m_iLineHeight - lineTextOffset), clr, true, text);
 
-		// 3rd column
-		strcpy_s( text, "[RDY]" );
+		// 3rd and 4th column
+		strcpy_s(text, "[RDY]");
+		auto column = 0U;
+		auto summoners = m_mapSummoners[hero->GetNetworkId()];
 
-		auto flashSlot = hero->GetSpellSlot( "SummonerFlash" );
-
-		if ( flashSlot != kSlotUnknown )
+		for (auto summoner : summoners)
 		{
-			ready = hero->GetSpellRemainingCooldown( flashSlot ) < 1.f;
+			auto slot = hero->GetSpellSlot(summoner);
 
-			auto texture = m_mapTextures[ "SummonerFlash" ];
+			auto texture = (*m_pTextures)[std::string(summoner)];
+			if (texture != nullptr)
+				texture->Draw(xPos + 180 + (column * 80), yPos + line * m_iLineHeight);
 
-			if ( texture != nullptr )
-				texture->Draw( xPos + 180, yPos + line * m_iLineHeight );
+			auto rcd = hero->GetSpellRemainingCooldown(slot);
+			auto rcd2 = m_pCooldownManager->GetRemainingCooldown(hero->GetNetworkId(), slot);
+			if (rcd2 > 0.0f)
+				rcd = rcd2;
 
-			if ( !ready )
-				sprintf_s( text, "[%.0f]", hero->GetSpellRemainingCooldown( flashSlot ) );
+			ready = rcd < 1.f;
+			if (!ready)
+				sprintf_s(text, "[%.0f]", rcd);
 			else
-				strcpy_s( text, "[RDY]" );
+				strcpy_s(text, "[RDY]");
 
 			clr = ready ? Color::LightGreen() : Color::Yellow();
 
-			KDrawing::DrawString( Vec2( xPos + 197, yPos + line * m_iLineHeight - lineTextOffset ), clr, true, text );
+			KDrawing::DrawString(Vec2(xPos + 197 + (column * 80), yPos + line * m_iLineHeight - lineTextOffset), clr, true, text);
+			column++;
 		}
-		else
-		{
-			std::string name( hero->GetSpellName( kSummonerSlot1 ) );
-			auto texture = m_mapTextures[ name ];
-
-			if ( texture != nullptr )
-				texture->Draw( xPos + 180, yPos + line * m_iLineHeight );
-
-			ready = hero->GetSpellRemainingCooldown( kSummonerSlot1 ) < 1.f;
-
-			if ( !ready )
-				sprintf_s( text, "[%.0f]", hero->GetSpellRemainingCooldown( kSummonerSlot1 ) );
-			else
-				strcpy_s( text, "[RDY]" );
-
-			clr = ready ? Color::LightGreen() : Color::Yellow();
-
-			KDrawing::DrawString( Vec2( xPos + 197, yPos + line * m_iLineHeight - lineTextOffset ), clr, true, text );
-		}
-
-		// 4th column
-		strcpy_s( text, "[S2]" );
-
-		auto secondSummonerSlot = flashSlot == kSummonerSlot1 ? kSummonerSlot2 : kSummonerSlot1;
-
-		if ( flashSlot == kSlotUnknown )
-			secondSummonerSlot = kSummonerSlot2;
-
-		std::string name( hero->GetSpellName( secondSummonerSlot ) );
-		auto texture = m_mapTextures[ name ];
-
-		if ( texture != nullptr )
-			texture->Draw( xPos + 260, yPos + line * m_iLineHeight );
-
-		ready = hero->GetSpellRemainingCooldown( secondSummonerSlot ) < 1.f;
-
-		if ( !ready )
-			sprintf_s( text, "[%.0f]", hero->GetSpellRemainingCooldown( secondSummonerSlot ) );
-		else
-			strcpy_s( text, "[RDY]" );
-
-		clr = ready ? Color::LightGreen() : Color::Yellow();
-
-		KDrawing::DrawString( Vec2( xPos + 277, yPos + line * m_iLineHeight - lineTextOffset ), clr, true, text );
 
 		line++;
 	}
 }
 
-auto SpellInfoBox::HandleDrag() -> void
+auto SpellInfoBox::HandleDrag() const -> void
 {
-	if ( !m_pDraw->Enabled() )
+	if (!m_pDraw->Enabled())
 		return;
 
-	static bool isDragging = false;
+	static auto isDragging = false;
 
 	POINT cursor;
-	GetCursorPos( &cursor );
+	GetCursorPos(&cursor);
 
 	auto x = m_pPosX->GetInteger();
 	auto y = m_pPosY->GetInteger();
 
-	if ( isDragging 
+	if (isDragging
 		|| cursor.x > x && cursor.x < x + m_iWidth
-		&& cursor.y > y && cursor.y < y + m_iHeight )
+		&& cursor.y > y && cursor.y < y + m_iHeight)
 	{
 		static std::array<int, 2> delta = { -1, -1 };
 
-		if ( delta[ 0 ] == -1 && delta[ 1 ] == -1 )
+		if (delta[0] == -1 && delta[1] == -1)
 		{
-			delta[ 0 ] = cursor.x - x;
-			delta[ 1 ] = cursor.y - y;
+			delta[0] = cursor.x - x;
+			delta[1] = cursor.y - y;
 		}
 
-		if ( m_pInputManager->IsMouseButtonPressed( kLButton ) )
+		if (m_pInputManager->IsMouseButtonPressed(kLButton))
 		{
 			isDragging = true;
 
-			auto newX = cursor.x - delta[ 0 ];
-			auto newY = cursor.y - delta[ 1 ];
+			auto newX = cursor.x - delta[0];
+			auto newY = cursor.y - delta[1];
 
-			m_pPosX->UpdateInteger( newX );
-			m_pPosY->UpdateInteger( newY );
+			m_pPosX->UpdateInteger(newX);
+			m_pPosY->UpdateInteger(newY);
 
 			x = newX;
 			y = newY;
@@ -270,20 +184,20 @@ auto SpellInfoBox::HandleDrag() -> void
 		{
 			isDragging = false;
 
-			delta[ 0 ] = -1;
-			delta[ 1 ] = -1;
+			delta[0] = -1;
+			delta[1] = -1;
 		}
 	}
 
-	if ( x < 0 )
-		m_pPosX->UpdateInteger( 0 );
+	if (x < 0)
+		m_pPosX->UpdateInteger(0);
 
-	if ( y < 0 )
-		m_pPosY->UpdateInteger( 0 );
+	if (y < 0)
+		m_pPosY->UpdateInteger(0);
 
-	if ( x > m_vecScreenSize.x - m_iWidth )
-		m_pPosX->UpdateInteger( m_vecScreenSize.x - m_iWidth );
+	if (x > m_vecScreenSize.x - m_iWidth)
+		m_pPosX->UpdateInteger(m_vecScreenSize.x - m_iWidth);
 
-	if ( y > m_vecScreenSize.y - m_iHeight )
-		m_pPosY->UpdateInteger( m_vecScreenSize.y - m_iHeight );
+	if (y > m_vecScreenSize.y - m_iHeight)
+		m_pPosY->UpdateInteger(m_vecScreenSize.y - m_iHeight);
 }

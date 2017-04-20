@@ -4,7 +4,7 @@
 class Ignite
 {
 public:
-	explicit Ignite( IMenu* parentMenu, eSpellSlot igniteSlot, IUnit* player );
+	explicit Ignite(IMenu* parentMenu, eSpellSlot igniteSlot, IUnit* player);
 	~Ignite();
 
 	auto OnUpdate() -> void;

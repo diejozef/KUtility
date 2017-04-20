@@ -5,14 +5,15 @@
 class Passives
 {
 public:
-	explicit Passives( IMenu* parentMenu );
+	explicit Passives(IMenu* parentMenu);
 	~Passives();
 
-	auto OnRenderEnemy( IUnit* hero ) -> void;
+	auto OnRenderEnemy(IUnit* hero) -> void;
 
 private:
 	IMenu* m_pMenu;
 	IMenuOption* m_pEnable;
 	IMenuOption* m_pDrawRebirthPassives;
 	IMenuOption* m_pDrawPassives;
+	IMenuOption* m_pDrawItemCooldowns;
 };

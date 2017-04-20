@@ -4,10 +4,10 @@
 class Clones
 {
 public:
-	explicit Clones( IMenu* parentMenu );
+	explicit Clones(IMenu* parentMenu);
 	~Clones();
 
-	auto OnRenderEnemy( IUnit* hero ) -> void;
+	auto OnRenderEnemy(IUnit* hero) -> void;
 
 private:
 	IMenu* m_pMenu;

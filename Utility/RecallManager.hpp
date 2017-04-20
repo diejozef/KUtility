@@ -5,13 +5,14 @@
 class RecallManager
 {
 public:
-	explicit RecallManager( IMenu* parentMenu, IUnit* player, InputManager* inputManager, std::vector<FowTracker>* trackers );
+	explicit RecallManager(IMenu* parentMenu, IUnit* player, InputManager* inputManager, std::unordered_map<int, FowTracker>* trackers);
 	~RecallManager();
 
 	auto OnRender() -> void;
 	auto OnUpdate() -> void;
-	auto OnTeleport( OnTeleportArgs* data ) -> void;
+	auto OnTeleport(OnTeleportArgs* data) -> void;
 
+public:
 	auto HandleDrag() -> void;
 
 private:
@@ -29,6 +30,9 @@ private:
 	IUnit* m_pPlayer;
 
 private:
-	std::vector<FowTracker>* m_pFowTrackers;
+	bool m_bBarBeingRendered;
+
+private:
+	std::unordered_map<int, FowTracker>* m_pFowTrackers;
 	std::vector<RecallTracker> m_vecTrackers;
 };

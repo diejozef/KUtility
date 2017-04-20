@@ -12,7 +12,7 @@ enum eWardItemId
 class AutoBuy
 {
 public:
-	explicit AutoBuy( IMenu* parentMenu, IUnit* player );
+	explicit AutoBuy(IMenu* parentMenu, IUnit* player);
 	~AutoBuy();
 
 	auto OnUpdate() -> void;

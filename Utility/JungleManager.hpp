@@ -4,12 +4,12 @@
 class JungleManager
 {
 public:
-	explicit JungleManager( IMenu* parentMenu );
+	explicit JungleManager(IMenu* parentMenu);
 	~JungleManager();
 
 	auto OnRender() -> void;
 	auto OnUpdate() -> void;
-	auto OnJungleNotify( JungleNotifyData* data ) -> void;
+	auto OnJungleNotify(JungleNotifyData* data) -> void;
 
 private:
 	IMenu* m_pMenu;

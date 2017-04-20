@@ -5,7 +5,7 @@ class AutoMute
 {
 public:
 	explicit AutoMute() { }
-	explicit AutoMute( IMenu* parentMenu );
+	explicit AutoMute(IMenu* parentMenu);
 	~AutoMute();
 
 private:

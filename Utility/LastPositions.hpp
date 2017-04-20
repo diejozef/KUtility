@@ -6,16 +6,20 @@
 class LastPositions
 {
 public:
-	explicit LastPositions( IMenu* parentMenu, std::vector<FowTracker>* trackers );
+	explicit LastPositions(IMenu* parentMenu,
+						   std::unordered_map<int, FowTracker>* trackers,
+						   std::unordered_map<std::string, ITexture*>* textures);
 	~LastPositions();
 
-	auto OnRenderEnemy( IUnit* hero ) -> void;
+	auto OnRenderEnemy(IUnit* hero) -> void;
 
 private:
 	IMenu* m_pMenu;
 	IMenuOption* m_pEnable;
-	IMenuOption* m_pDrawTimer;
 	IMenuOption* m_pDrawIcons;
+	IMenuOption* m_pDraw3D;
 
-	std::vector<FowTracker>* m_pFowTrackers;
+private:
+	std::unordered_map<int, FowTracker>* m_pFowTrackers;
+	std::unordered_map<std::string, ITexture*>* m_pTextures;
 };

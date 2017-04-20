@@ -100,6 +100,18 @@
     <ClCompile Include="RecallManager.cpp">
       <Filter>Drawings\RecallTracker</Filter>
     </ClCompile>
+    <ClCompile Include="SkinChanger.cpp">
+      <Filter>SkinChanger</Filter>
+    </ClCompile>
+    <ClCompile Include="ExtendedAwareness.cpp">
+      <Filter>Drawings\ExtendedAwareness</Filter>
+    </ClCompile>
+    <ClCompile Include="Lantern.cpp">
+      <Filter>Activator\Lantern</Filter>
+    </ClCompile>
+    <ClCompile Include="CooldownManager.cpp">
+      <Filter>Cooldowns</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Wards.hpp">
@@ -210,6 +222,18 @@
     <ClInclude Include="RecallManager.hpp">
       <Filter>Drawings\RecallTracker</Filter>
     </ClInclude>
+    <ClInclude Include="SkinChanger.hpp">
+      <Filter>SkinChanger</Filter>
+    </ClInclude>
+    <ClInclude Include="ExtendedAwareness.hpp">
+      <Filter>Drawings\ExtendedAwareness</Filter>
+    </ClInclude>
+    <ClInclude Include="Lantern.hpp">
+      <Filter>Activator\Lantern</Filter>
+    </ClInclude>
+    <ClInclude Include="CooldownManager.hpp">
+      <Filter>Cooldowns</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -292,6 +316,18 @@
     </Filter>
     <Filter Include="Drawings\RecallTracker">
       <UniqueIdentifier>{6f68fb55-4521-40ab-b346-308e22fbf036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SkinChanger">
+      <UniqueIdentifier>{df63d06d-76aa-45ce-aeb7-a5fa646839dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drawings\ExtendedAwareness">
+      <UniqueIdentifier>{73e89b8b-0c53-4017-9bc6-ff068cc126f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Activator\Lantern">
+      <UniqueIdentifier>{60de38ed-bfa6-4b70-8b4d-c8280810d89d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cooldowns">
+      <UniqueIdentifier>{a6410b7b-1554-46cb-9ed1-e98d581aa4c4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

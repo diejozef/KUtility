@@ -4,10 +4,10 @@
 class Clicks
 {
 public:
-	explicit Clicks( IMenu* parentMenu );
+	explicit Clicks(IMenu* parentMenu);
 	~Clicks();
 
-	auto OnRenderEnemy( IUnit* hero ) -> void;
+	auto OnRenderEnemy(IUnit* hero) -> void;
 
 private:
 	IMenu* m_pMenu;

@@ -4,7 +4,7 @@
 class TurretRanges
 {
 public:
-	explicit TurretRanges( IMenu* parentMenu, IUnit* player );
+	explicit TurretRanges(IMenu* parentMenu, IUnit* player);
 	~TurretRanges();
 
 	auto OnRender() -> void;

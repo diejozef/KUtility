@@ -4,10 +4,10 @@
 class BoundingBox
 {
 public:
-	explicit BoundingBox( IMenu* parentMenu );
+	explicit BoundingBox(IMenu* parentMenu);
 	~BoundingBox();
 
-	auto OnRenderEnemy( IUnit* hero ) -> void;
+	auto OnRenderEnemy(IUnit* hero) -> void;
 
 private:
 	IMenu* m_pMenu;

@@ -1,12 +1,12 @@
 #include "AutoBuy.hpp"
 
-AutoBuy::AutoBuy( IMenu* parentMenu, IUnit* player ) :
-	m_pPlayer( player )
+AutoBuy::AutoBuy(IMenu* parentMenu, IUnit* player) :
+	m_pPlayer(player)
 {
-	m_pMenu = parentMenu->AddMenu( "AutoBuy" );
-	m_pAutoBuyBlueWard = m_pMenu->CheckBox( "Buy Blue Trinket", false );
-	m_pAutoBuySweeper = m_pMenu->CheckBox( "Buy Sweeper", false );
-	m_pUpgrade = m_pMenu->CheckBox( "Only Upgrade", false );
+	m_pMenu = parentMenu->AddMenu("Auto Buy");
+	m_pAutoBuyBlueWard = m_pMenu->CheckBox("Buy Blue Trinket", false);
+	m_pAutoBuySweeper = m_pMenu->CheckBox("Buy Sweeper", false);
+	m_pUpgrade = m_pMenu->CheckBox("Only Upgrade", false);
 }
 
 AutoBuy::~AutoBuy()
@@ -20,45 +20,47 @@ auto AutoBuy::OnUpdate() -> void
 	auto buySweeper = m_pAutoBuySweeper->Enabled();
 	auto upgrade = m_pUpgrade->Enabled();
 
-	if ( !buyBlueWard && !buySweeper && !upgrade )
+	if (!buyBlueWard && !buySweeper && !upgrade)
 		return;
 
-	auto hasBlueWard = m_pPlayer->HasItemId( kFarsightAlteration );
-	auto hasSweeper = m_pPlayer->HasItemId( kOracleAlteration );
+	auto hasBlueWard = m_pPlayer->HasItemId(kFarsightAlteration);
+	auto hasSweeper = m_pPlayer->HasItemId(kOracleAlteration);
 
-	if ( hasBlueWard || hasSweeper )
+	if (hasBlueWard || hasSweeper)
 		return;
 
-	if ( m_pPlayer->GetLevel() >= 9 && InFountain() )
+	if (m_pPlayer->GetLevel() >= 9 && InFountain())
 	{
-		if ( upgrade )
+		if (upgrade)
 		{
-			if ( m_pPlayer->HasItemId( kWardingTotem ) && !hasBlueWard )
+			if (m_pPlayer->HasItemId(kWardingTotem) && !hasBlueWard)
 			{
-				GGame->BuyItem( kFarsightAlteration );
+				GGame->BuyItem(kFarsightAlteration);
 			}
-			else if ( m_pPlayer->HasItemId( kSweepingLens ) && !hasSweeper )
+			else if (m_pPlayer->HasItemId(kSweepingLens) && !hasSweeper)
 			{
-				GGame->BuyItem( kOracleAlteration );
+				GGame->BuyItem(kOracleAlteration);
 			}
 
 			return;
 		}
 
-		if ( buyBlueWard && !hasBlueWard )
+		if (buyBlueWard && !hasBlueWard)
 		{
-			GGame->BuyItem( kFarsightAlteration );
+			GGame->BuyItem(kFarsightAlteration);
 		}
-		else if ( buySweeper && !hasSweeper )
+		else if (buySweeper && !hasSweeper)
 		{
-			GGame->BuyItem( kOracleAlteration );
+			GGame->BuyItem(kOracleAlteration);
 		}
 	}
 }
 
 auto AutoBuy::InFountain() -> bool
 {
-	auto turrets = GEntityList->GetAllTurrets( true, false );
+	return GUtility->IsPositionInFountain(m_pPlayer->ServerPosition());
+
+	/*auto turrets = GEntityList->GetAllTurrets( true, false );
 	auto i = std::find_if( turrets.begin(), turrets.end(), []( IUnit* turret )
 	{
 		if ( turret == nullptr )
@@ -73,11 +75,11 @@ auto AutoBuy::InFountain() -> bool
 	if ( i != turrets.end() )
 	{
 		auto fountain = *i;
-		auto distance = ( m_pPlayer->ServerPosition() - fountain->GetPosition() ).Length2D();
+		auto distanceSqr = ( m_pPlayer->ServerPosition() - fountain->GetPosition() ).Length2DSqr();
 
-		if ( distance < 1100.0f )
+		if ( distanceSqr < _sqr( 1100.0f ) )
 			return true;
 	}
 
-	return false;
+	return false;*/
 }

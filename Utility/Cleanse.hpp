@@ -4,17 +4,18 @@
 class Cleanse
 {
 public:
-	explicit Cleanse( IMenu* parentMenu, IUnit* player );
+	explicit Cleanse(IMenu* parentMenu, IUnit* player);
 	~Cleanse();
 
 	auto OnUpdate() -> void;
-	auto OnBuffAdd( IUnit* source, void* data ) -> void;
+	auto OnBuffAdd(IUnit* source, void* data) -> void;
 
 private:
 	IMenu* m_pMenu;
 	IMenu* m_pChampionFilter;
 	IMenuOption* m_pAutoUse;
 	IMenuOption* m_pDelay;
+	IMenuOption* m_pUseInCombo;
 
 private:
 	bool m_bHasCleanse;
@@ -26,12 +27,7 @@ private:
 	IInventoryItem* m_pMerc;
 
 private:
-	std::function<void()> m_fnCastQss;
-	std::function<void()> m_fnCastMerc;
-	std::function<void()> m_fnCastCleanse;
-
-private:
-	auto AutoUse( void* data ) -> void;
-	auto CanBeCleansed( eBuffType type ) -> bool;
-	auto GetCleanse() -> eSpellSlot;
+	auto AutoUse(void* data) -> void;
+	auto CanBeCleansed(eBuffType type) -> bool;
+	auto GetCleanse()->eSpellSlot;
 };

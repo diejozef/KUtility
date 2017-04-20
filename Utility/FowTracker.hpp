@@ -5,34 +5,34 @@ class FowTracker
 {
 public:
 	explicit FowTracker();
-	explicit FowTracker( IUnit* unit );
+	explicit FowTracker(IUnit* unit);
 	~FowTracker();
 
-	auto OnEnterFow( float time ) -> void;
-	auto OnResetPos( void ) -> void;
-	auto OnExitFow( void ) -> void;
+	auto OnEnterFow(float time) -> void;
+	auto OnResetPos(void) -> void;
+	auto OnExitFow(void) -> void;
 
 public:
-	auto SetLastPos( const Vec3& pos ) -> void;
+	auto SetLastPos(const Vec3& pos) -> void;
 
 public:
-	inline auto InFow( void ) const -> bool {
+	inline auto InFow(void) const -> bool {
 		return m_bInFow;
 	}
 
-	inline auto Time( void ) const -> float {
+	inline auto Time(void) const -> float {
 		return m_flTime;
 	}
 
-	inline auto Unit( void ) const -> IUnit* {
+	inline auto Unit(void) const -> IUnit* {
 		return m_pUnit;
 	}
 
-	inline auto LastPos( void ) const -> Vec3 {
+	inline auto LastPos(void) const -> Vec3 {
 		return m_vecLastPos;
 	}
 
-	inline auto LastMinimapPos( void ) const -> Vec2 {
+	inline auto LastMinimapPos(void) const -> Vec2 {
 		return m_vecLastMinimapPos;
 	}
 
