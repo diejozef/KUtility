@@ -19,7 +19,9 @@ private:
 
 private:
 	bool m_bHasCleanse;
+	bool m_bHasOranges;
 	ISpell2* m_pCleanse;
+	ISpell2* m_pOranges;
 	IUnit* m_pPlayer;
 
 private:

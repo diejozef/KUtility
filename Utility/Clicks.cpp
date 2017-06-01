@@ -2,7 +2,7 @@
 
 Clicks::Clicks(IMenu* parentMenu)
 {
-	m_pMenu = parentMenu->AddMenu("Clicks");
+	m_pMenu = parentMenu->AddMenu("ku_waypoints");
 	m_pEnable = m_pMenu->CheckBox("Enable", false);
 }
 

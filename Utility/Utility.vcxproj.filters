@@ -50,7 +50,7 @@
       <Filter>Activator\Cleanse</Filter>
     </ClCompile>
     <ClCompile Include="AutoBuy.cpp">
-      <Filter>Activator\Items</Filter>
+      <Filter>Activator\AutoBuy</Filter>
     </ClCompile>
     <ClCompile Include="AutoLevelUp.cpp">
       <Filter>Activator\AutoLevelUp</Filter>
@@ -112,6 +112,30 @@
     <ClCompile Include="CooldownManager.cpp">
       <Filter>Cooldowns</Filter>
     </ClCompile>
+    <ClCompile Include="SpellBlock.cpp">
+      <Filter>Activator\SpellBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="SpellBlockDatabase.cpp">
+      <Filter>Activator\SpellBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="Potions.cpp">
+      <Filter>Activator\Potions</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoPing.cpp">
+      <Filter>AutoPing</Filter>
+    </ClCompile>
+    <ClCompile Include="Support.cpp">
+      <Filter>Activator\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="Defensives.cpp">
+      <Filter>Activator\Defensives</Filter>
+    </ClCompile>
+    <ClCompile Include="LastHitHelper.cpp">
+      <Filter>LastHitHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="Buildings.cpp">
+      <Filter>Drawings\Buildings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Wards.hpp">
@@ -172,7 +196,7 @@
       <Filter>Activator\Cleanse</Filter>
     </ClInclude>
     <ClInclude Include="AutoBuy.hpp">
-      <Filter>Activator\Items</Filter>
+      <Filter>Activator\AutoBuy</Filter>
     </ClInclude>
     <ClInclude Include="AutoLevelUp.hpp">
       <Filter>Activator\AutoLevelUp</Filter>
@@ -234,6 +258,30 @@
     <ClInclude Include="CooldownManager.hpp">
       <Filter>Cooldowns</Filter>
     </ClInclude>
+    <ClInclude Include="SpellBlock.hpp">
+      <Filter>Activator\SpellBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="SpellBlockDatabase.hpp">
+      <Filter>Activator\SpellBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="Potions.hpp">
+      <Filter>Activator\Potions</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoPing.hpp">
+      <Filter>AutoPing</Filter>
+    </ClInclude>
+    <ClInclude Include="Support.hpp">
+      <Filter>Activator\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="Defensives.hpp">
+      <Filter>Activator\Defensives</Filter>
+    </ClInclude>
+    <ClInclude Include="LastHitHelper.hpp">
+      <Filter>LastHitHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="Buildings.hpp">
+      <Filter>Drawings\Buildings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -262,9 +310,6 @@
     </Filter>
     <Filter Include="Activator\Ignite">
       <UniqueIdentifier>{86c39759-33ab-4720-8659-880a8854b12f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Activator\Items">
-      <UniqueIdentifier>{4f3ef819-6176-4811-be65-46e91a7165fb}</UniqueIdentifier>
     </Filter>
     <Filter Include="AutoMute">
       <UniqueIdentifier>{237fe5b2-9f68-4cd9-8551-7c7c44277889}</UniqueIdentifier>
@@ -328,6 +373,30 @@
     </Filter>
     <Filter Include="Cooldowns">
       <UniqueIdentifier>{a6410b7b-1554-46cb-9ed1-e98d581aa4c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Activator\SpellBlock">
+      <UniqueIdentifier>{e1c1e790-8d9d-4262-96c5-e3728565d83e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Activator\AutoBuy">
+      <UniqueIdentifier>{4f3ef819-6176-4811-be65-46e91a7165fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Activator\Potions">
+      <UniqueIdentifier>{fafcfeb6-13fd-45a8-864b-4cad444c02b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AutoPing">
+      <UniqueIdentifier>{2d78ed96-4bb6-46e6-935e-1c6c44556e8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Activator\Defensives">
+      <UniqueIdentifier>{ea9d0355-de56-4a28-927f-677c672a4b8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Activator\Support">
+      <UniqueIdentifier>{166be252-8f34-449d-9a85-d135c3df1844}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LastHitHelper">
+      <UniqueIdentifier>{4117be6e-1736-410c-a787-c9c9b1ae9678}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drawings\Buildings">
+      <UniqueIdentifier>{35d14ff0-d392-480f-a768-9717d671442e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

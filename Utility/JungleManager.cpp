@@ -2,7 +2,7 @@
 
 JungleManager::JungleManager(IMenu* parentMenu)
 {
-	m_pMenu = parentMenu->AddMenu("Jungle Tracker");
+	m_pMenu = parentMenu->AddMenu("ku_jungle_tracker");
 	m_pFowTracker = m_pMenu->CheckBox("FoW Tracker", false);
 	m_pUsePings = m_pMenu->CheckBox("Use Pings", false);
 

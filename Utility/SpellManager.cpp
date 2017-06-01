@@ -3,7 +3,7 @@
 SpellManager::SpellManager(IMenu* parentMenu, IUnit* player) :
 	m_pPlayer(player)
 {
-	m_pMenu = parentMenu->AddMenu("Spell Drawings");
+	m_pMenu = parentMenu->AddMenu("ku_spell_drawings");
 	m_pDrawSkillshots = m_pMenu->CheckBox("Draw Skillshots", false);
 	m_pDrawDashes = m_pMenu->CheckBox("Draw Dashes", false);
 }
@@ -201,7 +201,7 @@ auto SpellManager::OnDestroyObject(IUnit* object) -> void
 		}
 
 		auto distanceSqr = (skillshot.StartPos() - object->GetPosition().To2DEx()).LengthSqr();
-		if (distanceSqr < _sqr(15.0f))
+		if (distanceSqr < _sqr(15.0f) && !strcmp(skillshot.Info().m_strProjectileName, GMissileData->GetName(object)))
 			skillshot.Invalidate();
 	}
 }

@@ -46,6 +46,14 @@ enum ePredictionChance
 	kHitChanceImmobile
 };
 
+struct OnGetAutoAttackDamageArgs
+{
+	float OriginalDamage;
+	IUnit* Source;
+	IUnit* Target;
+	bool IncludePassives;
+};
+
 struct NavigationPath
 {
 	int			CurrentWaypoint_;
@@ -63,6 +71,21 @@ struct InterruptibleSpell
 	float					EndTime;
 	bool					MovementInterupts;
 	void*					Data;
+};
+
+struct OnStopCastArgs
+{
+	IUnit* Source;
+	bool StopAnimation;
+	bool ExecuteCastFrame;
+	bool ForceStop;
+	bool DestroyMissile;
+};
+
+struct OnBuffUpdateCountArgs
+{
+	IUnit* Source;		// Source unit of the buff
+	void* BuffData;		// Data to be passed to GPluginBuffData for more information
 };
 
 struct AdvPredictionInput

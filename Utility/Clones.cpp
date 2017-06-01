@@ -2,7 +2,7 @@
 
 Clones::Clones(IMenu* parentMenu)
 {
-	m_pMenu = parentMenu->AddMenu("Clones");
+	m_pMenu = parentMenu->AddMenu("ku_clone_tracker");
 	m_pEnable = m_pMenu->CheckBox("Enable", false);
 }
 

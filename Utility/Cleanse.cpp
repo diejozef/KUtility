@@ -3,12 +3,12 @@
 Cleanse::Cleanse(IMenu* parentMenu, IUnit* player) :
 	m_pPlayer(player)
 {
-	m_pMenu = parentMenu->AddMenu("Cleanse/QSS");
+	m_pMenu = parentMenu->AddMenu("ku_cleanse");
 	m_pAutoUse = m_pMenu->CheckBox("Auto Use", false);
 	m_pUseInCombo = m_pMenu->CheckBox("Use Only in Combo", false);
 	m_pDelay = m_pMenu->AddInteger("Delay (ms)", 0, 500, 10);
 
-	m_pChampionFilter = m_pMenu->AddMenu("Champion Filter");
+	m_pChampionFilter = m_pMenu->AddMenu("cleanse_filter");
 
 	auto enemies = GEntityList->GetAllHeros(false, true);
 	std::for_each(enemies.begin(), enemies.end(), [&](IUnit* hero)
@@ -24,6 +24,10 @@ Cleanse::Cleanse(IMenu* parentMenu, IUnit* player) :
 	m_bHasCleanse = (slot != kSlotUnknown);
 	if (m_bHasCleanse)
 		m_pCleanse = GPluginSDK->CreateSpell2(slot, kTargetCast, false, false, kCollidesWithNothing);
+
+	m_bHasOranges = !strcmp(m_pPlayer->ChampionName(), "Gangplank");
+	if (m_bHasOranges)
+		m_pOranges = GPluginSDK->CreateSpell2(kSlotW, kTargetCast, false, false, kCollidesWithNothing);
 }
 
 Cleanse::~Cleanse()
@@ -55,8 +59,9 @@ auto Cleanse::AutoUse(void* data) -> void
 	auto hasQss = m_pPlayer->HasItemId(3140) && m_pQSS->IsReady();
 	auto hasMerc = m_pPlayer->HasItemId(3139) && m_pMerc->IsReady();
 	auto hasCleanse = m_bHasCleanse && m_pCleanse->IsReady();
+	auto hasOranges = m_bHasOranges && m_pOranges->IsReady();
 
-	if (!hasQss && !hasMerc && !hasCleanse)
+	if (!hasQss && !hasMerc && !hasCleanse && !hasOranges)
 		return;
 
 	auto caster = GBuffData->GetCaster(data);
@@ -88,7 +93,15 @@ auto Cleanse::AutoUse(void* data) -> void
 
 	auto delay = m_pDelay->GetInteger();
 
-	if (hasQss)
+
+	if (hasOranges)
+	{
+		if (delay < 1)
+			m_pOranges->CastOnPlayer();
+		else
+			GPluginSDK->DelayFunctionCall(delay, [&]() -> void { m_pOranges->CastOnPlayer(); });
+	}
+	else if (hasQss)
 	{
 		if (delay < 1)
 			m_pQSS->CastOnPlayer();

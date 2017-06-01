@@ -4,11 +4,11 @@ AutoLevelUp::AutoLevelUp(IMenu* parentMenu, IUnit* player) :
 	m_pPlayer(player)
 {
 	char text[32];
-	sprintf_s(text, "Auto Level Up - %s", m_pPlayer->ChampionName());
+	sprintf_s(text, "ku_auto_levelup - %s", m_pPlayer->ChampionName());
 
 	m_pMenu = parentMenu->AddMenu(text);
 	m_pAutoLevelUp = m_pMenu->CheckBox("Enable", false);
-	m_pStartLvl = m_pMenu->AddInteger("Start AutoLevelUp at", 1, 10, 3);
+	m_pStartLvl = m_pMenu->AddInteger("Start at Level", 1, 10, 3);
 	m_pAutoLevelUpR = m_pMenu->CheckBox("Auto-level Ultimate", false);
 	m_pFirst = m_pMenu->AddSelection("1st", 3, { "Q", "W", "E", "R" });
 	m_pSecond = m_pMenu->AddSelection("2nd", 0, { "Q", "W", "E", "R" });

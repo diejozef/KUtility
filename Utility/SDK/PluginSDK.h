@@ -275,6 +275,10 @@ public:
 	virtual int GetCollisionFlags() = 0;
 	virtual void SetTriggerEvents(bool TriggerEvents) = 0;
 	virtual bool IsTriggeringEvents() = 0;
+	virtual void SetSpellName(std::string const& SpellName) = 0;
+	virtual std::string GetSpellName() = 0;
+	virtual void SetChargedBuffName(std::string const& BuffName) = 0;
+	virtual std::string GetChargedBuffName() = 0;
 };
 
 class IOrbwalking
@@ -434,6 +438,15 @@ public:
 	virtual Vec3 To3D(Vec2 const& Other) = 0;
 	virtual float GetExperienceRequiredForLevel(int Level) = 0;
 	virtual int GetRecallDuration(const char* RecallSpellName) = 0;
+	virtual bool IsKeyDown(int KeyCode) = 0;
+	virtual bool IsKeyPressed(int KeyCode) = 0;
+	virtual bool IsKeyReleased(int KeyCode) = 0;
+	virtual bool DoesDirectoryExist(const char* DirectoryName) = 0;
+	virtual bool DoesFileExist(const char* FileName) = 0;
+	virtual bool CreateNewDirectory(const char* DirectoryName) = 0;
+	virtual bool ReadFromFile(const char* FileName, std::vector<uint8_t>& OutputFileData) = 0;
+	virtual bool WriteToFile(const char* FileName, std::vector<uint8_t>& InputFileData) = 0;
+	virtual void GetCursorPosition(POINT& Output) = 0;
 };
 
 class IPluginPredictionOverride

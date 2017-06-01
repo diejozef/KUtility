@@ -3,7 +3,7 @@
 AARange::AARange(IMenu* parentMenu, IUnit* player) :
 	m_pPlayer(player)
 {
-	m_pMenu = parentMenu->AddMenu("AutoAttack Range");
+	m_pMenu = parentMenu->AddMenu("ku_autoattack_range");
 	m_pEnable = m_pMenu->CheckBox("Enable", false);
 	m_pOnlyWhileOrbwalking = m_pMenu->CheckBox("Draw Only while Orbwalking", false);
 }

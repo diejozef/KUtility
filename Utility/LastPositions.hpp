@@ -7,7 +7,7 @@ class LastPositions
 {
 public:
 	explicit LastPositions(IMenu* parentMenu,
-						   std::unordered_map<int, FowTracker>* trackers,
+						   std::vector<FowTracker>* trackers,
 						   std::unordered_map<std::string, ITexture*>* textures);
 	~LastPositions();
 
@@ -20,6 +20,6 @@ private:
 	IMenuOption* m_pDraw3D;
 
 private:
-	std::unordered_map<int, FowTracker>* m_pFowTrackers;
+	std::vector<FowTracker>* m_pFowTrackers;
 	std::unordered_map<std::string, ITexture*>* m_pTextures;
 };

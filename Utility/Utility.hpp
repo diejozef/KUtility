@@ -10,6 +10,8 @@
 #include "AutoMute.hpp"
 #include "JungleManager.hpp"
 #include "SkinChanger.hpp"
+#include "AutoPing.hpp"
+#include "LastHitHelper.hpp"
 
 class Utility
 {
@@ -18,7 +20,6 @@ public:
 	~Utility();
 
 	auto OnRender() -> void;
-	auto OnRender2() -> void;
 	auto OnGameUpdate() -> void;
 	auto OnSpellCast(CastedSpell const& spell) -> void;
 	auto OnCreateObject(IUnit* object) -> void;
@@ -30,6 +31,7 @@ public:
 	auto OnLevelUp(IUnit* source, int level) -> void;
 	auto OnJungleNotify(JungleNotifyData* data) -> void;
 	auto OnTeleport(OnTeleportArgs* data) -> void;
+	auto OnGetAutoAttackDamage(OnGetAutoAttackDamageArgs* data) -> float;
 	auto OnWndProc(HWND wnd, UINT message, WPARAM wparam, LPARAM lparam) -> bool;
 
 private:
@@ -45,6 +47,8 @@ private:
 	AutoMute* m_pAutoMute;
 	SkinChanger* m_pSkinChanger;
 	InputManager* m_pInputManager;
+	AutoPing* m_pAutoPing;
+	LastHitHelper* m_pLastHitHelper;
 };
 
 extern Utility* g_pUtility;

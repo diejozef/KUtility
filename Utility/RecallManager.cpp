@@ -1,12 +1,12 @@
 #include "RecallManager.hpp"
 
-RecallManager::RecallManager(IMenu* parentMenu, IUnit* player, InputManager* inputManager, std::unordered_map<int, FowTracker>* trackers) :
+RecallManager::RecallManager(IMenu* parentMenu, IUnit* player, InputManager* inputManager, std::vector<FowTracker>* trackers) :
 	m_pPlayer(player),
 	m_pInputManager(inputManager),
 	m_pFowTrackers(trackers),
 	m_bBarBeingRendered(false)
 {
-	m_pMenu = parentMenu->AddMenu("Recall Tracker");
+	m_pMenu = parentMenu->AddMenu("ku_recall_tracker");
 	m_pEnable = m_pMenu->CheckBox("Enable", false);
 	m_pUseChat = m_pMenu->CheckBox("Use Chat", false);
 	m_pDrawHp = m_pMenu->CheckBox("Draw Health %", false);
@@ -88,7 +88,12 @@ auto RecallManager::OnTeleport(OnTeleportArgs* data) -> void
 	});
 
 	if (data->Status == Teleport_Finish)
-		(*m_pFowTrackers)[caster->GetNetworkId()].OnResetPos();
+	{
+		std::find_if(m_pFowTrackers->begin(), m_pFowTrackers->end(), [&](const FowTracker& t)
+		{
+			return t.Unit()->GetNetworkId() == caster->GetNetworkId();
+		})->OnResetPos();
+	}
 }
 
 auto RecallManager::HandleDrag() -> void
@@ -98,8 +103,8 @@ auto RecallManager::HandleDrag() -> void
 
 	static bool isDragging = false;
 
-	POINT cursor;
-	GetCursorPos(&cursor);
+	POINT cursor{ 0 };
+	GUtility->GetCursorPosition(cursor);
 
 	auto x = m_pPosX->GetInteger();
 	auto y = m_pPosY->GetInteger();

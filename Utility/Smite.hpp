@@ -21,9 +21,11 @@ private:
 	IMenuOption* m_pToggleKey;
 	IMenuOption* m_pSmiteMajorBuffs;
 	IMenuOption* m_pSmiteMajorJungleMobs;
+	IMenuOption* m_pSmiteEnemy;
 
 private:
 	SmiteInfo m_smiteComboInfo;
+	eSpellSlot m_smiteSlot;
 	bool m_bHasSmiteCombo;
 	size_t m_iToggleEventId;
 	int m_iToggleKey;

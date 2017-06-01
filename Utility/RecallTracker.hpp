@@ -59,11 +59,9 @@ public:
 
 private:
 	IUnit* m_pUnit;
-
 	bool m_bRecalling;
 	bool m_bAborted;
 	bool m_bFinished;
-
 	float m_flEndTime;
 	float m_flDuration;
 };

@@ -17,12 +17,15 @@ CooldownManager::~CooldownManager()
 
 auto CooldownManager::OnSpellCast(const CastedSpell& spell) -> void
 {
-	if (spell.AutoAttack_)
+	/*if (spell.AutoAttack_)
 		return;
 
 	auto caster = spell.Caster_;
 	if (caster == nullptr || !caster->IsHero() || !caster->IsEnemy(m_pPlayer))
 		return;
+
+	if (m_mapCooldownEndTimes.find(caster->GetNetworkId()) == m_mapCooldownEndTimes.end())
+		return;*/
 }
 
 auto CooldownManager::OnTeleport(OnTeleportArgs* data) -> void
@@ -31,7 +34,7 @@ auto CooldownManager::OnTeleport(OnTeleportArgs* data) -> void
 	auto type = data->Type;
 	auto status = data->Status;
 
-	if (caster == nullptr || !caster->IsEnemy(m_pPlayer) || 
+	if (caster == nullptr || !caster->IsHero() || !caster->IsEnemy(m_pPlayer) || 
 		m_mapCooldownEndTimes.find(caster->GetNetworkId()) == m_mapCooldownEndTimes.end())
 		return;
 
@@ -40,7 +43,7 @@ auto CooldownManager::OnTeleport(OnTeleportArgs* data) -> void
 		// Todo: include summoner cdr mastery here
 		auto scdr = 0.0f;
 		if (caster->HasItemId(3158))
-			scdr = 0.1f;
+			scdr += 0.1f;
 
 		auto tpSlot = caster->GetSpellSlot("SummonerTeleport");
 		auto tpCd = 300.0f * (1.0f - scdr);
@@ -68,4 +71,11 @@ auto CooldownManager::GetRemainingCooldown(int networkId, int slot) -> float
 		return rcd;
 
 	return 0.0f;
+}
+
+auto CooldownManager::GetTotalCooldown(int networkId, int slot) -> float
+{
+	auto caster = GEntityList->GetEntityByNetworkId(networkId);
+	if (caster == nullptr)
+		return 0.0f;
 }

@@ -3,7 +3,7 @@
 AutoBuy::AutoBuy(IMenu* parentMenu, IUnit* player) :
 	m_pPlayer(player)
 {
-	m_pMenu = parentMenu->AddMenu("Auto Buy");
+	m_pMenu = parentMenu->AddMenu("ku_auto_buy");
 	m_pAutoBuyBlueWard = m_pMenu->CheckBox("Buy Blue Trinket", false);
 	m_pAutoBuySweeper = m_pMenu->CheckBox("Buy Sweeper", false);
 	m_pUpgrade = m_pMenu->CheckBox("Only Upgrade", false);

@@ -3,7 +3,7 @@
 WardManager::WardManager(IMenu* parentMenu, IUnit* player) :
 	m_pPlayer(player)
 {
-	m_pMenu = parentMenu->AddMenu("Ward Tracker");
+	m_pMenu = parentMenu->AddMenu("ku_ward_tracker");
 	m_pDrawWards = m_pMenu->CheckBox("Draw Wards", false);
 	m_pDrawRange = m_pMenu->CheckBox("Draw Vision Range", false);
 

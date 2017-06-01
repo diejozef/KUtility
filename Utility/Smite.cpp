@@ -3,15 +3,17 @@
 
 Smite::Smite(IMenu* parentMenu, eSpellSlot smiteSlot, IUnit* player, InputManager* inputManager) :
 	m_pPlayer(player),
-	m_pInputManager(inputManager)
+	m_pInputManager(inputManager),
+	m_smiteSlot(smiteSlot)
 {
-	m_pMenu = parentMenu->AddMenu("Smite");
+	m_pMenu = parentMenu->AddMenu("ku_auto_smite");
 	m_pAutoSmite = m_pMenu->CheckBox("Auto Use", false);
-	m_pSmiteMajorBuffs = m_pMenu->CheckBox("Smite Major Buffs", false);
-	m_pSmiteMajorJungleMobs = m_pMenu->CheckBox("Smite Major Mobs", false);
+	m_pSmiteMajorBuffs = m_pMenu->CheckBox("Smite Buffs", false);
+	m_pSmiteMajorJungleMobs = m_pMenu->CheckBox("Smite Mobs", false);
+	m_pSmiteEnemy = m_pMenu->CheckBox("Smite Focused Enemy", false);
 	m_pDrawToggle = m_pMenu->CheckBox("Draw Toggle Status", false);
-	m_pToggleKey = m_pMenu->AddKey("Toggle Key", 123);
 	m_pUseSmiteCombo = m_pMenu->CheckBox("[beta] Use Combo", false);
+	m_pToggleKey = m_pMenu->AddKey("Toggle Key", 123);
 
 	m_iToggleKey = m_pToggleKey->GetInteger();
 	m_pInputManager->GetEventManager()->AddKeyEventListener(m_iToggleKey, kInputEventTypeKeyDown, [&]() -> void
@@ -19,8 +21,8 @@ Smite::Smite(IMenu* parentMenu, eSpellSlot smiteSlot, IUnit* player, InputManage
 		m_pAutoSmite->UpdateInteger(!m_pAutoSmite->GetInteger());
 	}, m_iToggleEventId);
 
-	m_pSmite = GPluginSDK->CreateSpell2(smiteSlot, kTargetCast, false, false, kCollidesWithNothing);
-	m_pSmite->SetOverrideRange(m_pPlayer->BoundingRadius() + 500.0f); // temporary fix
+	m_pSmite = GPluginSDK->CreateSpell2(m_smiteSlot, kTargetCast, false, false, kCollidesWithNothing);
+	m_pSmite->SetOverrideRange(m_pPlayer->BoundingRadius() + 500.0f);
 
 	m_bHasSmiteCombo = SpellDb::GetSmiteSpell(m_pPlayer->ChampionName(), m_smiteComboInfo);
 	if (m_bHasSmiteCombo)
@@ -98,6 +100,20 @@ auto Smite::AutoSmite() -> void
 					m_pSmiteCombo->CastOnPosition(minion->GetPosition());
 				break;
 			}
+		}
+	}
+
+	if (!m_pSmiteEnemy->Enabled())
+		return;
+
+	auto target = GTargetSelector->GetFocusedTarget();
+	if (target != nullptr && GOrbwalker->GetOrbwalkingMode() == kModeCombo)
+	{
+		auto spellName = m_pPlayer->GetSpellName(m_smiteSlot);
+		if (!strcmp(spellName, "S5_SummonerSmiteDuel") || !strcmp(spellName, "S5_SummonerSmitePlayerGanker"))
+		{
+			if (KLib::InRange(m_pPlayer, target, m_pSmite->Range(), true))
+				m_pSmite->CastOnUnit(target);
 		}
 	}
 }

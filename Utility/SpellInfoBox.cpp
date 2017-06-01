@@ -1,7 +1,7 @@
 #include "SpellInfoBox.hpp"
 
 SpellInfoBox::SpellInfoBox(IMenu* parentMenu,
-						   std::unordered_map<int, FowTracker>* trackers,
+						   std::vector<FowTracker>* trackers,
 						   std::unordered_map<std::string, ITexture*>* textures,
 						   InputManager* inputManager,
 						   CooldownManager* cooldownManager) :
@@ -12,7 +12,7 @@ SpellInfoBox::SpellInfoBox(IMenu* parentMenu,
 	m_pInputManager(inputManager),
 	m_pCooldownManager(cooldownManager)
 {
-	m_pMenu = parentMenu->AddMenu("Info Box");
+	m_pMenu = parentMenu->AddMenu("ku_info_box");
 	m_pDraw = m_pMenu->CheckBox("Enable", false);
 
 	m_vecScreenSize = GRender->ScreenSize();
@@ -31,7 +31,7 @@ SpellInfoBox::SpellInfoBox(IMenu* parentMenu,
 			return !strcmp(name1, "SummonerFlash") > !strcmp(name2, "SummonerFlash");
 		});
 
-		m_mapSummoners[hero->GetNetworkId()] = summoners;
+		m_vecSummoners.emplace_back(summoners_t(hero->GetNetworkId(), summoners));
 	});
 }
 
@@ -64,7 +64,10 @@ auto SpellInfoBox::OnRender() -> void
 		if (hero == nullptr)
 			continue;
 
-		auto fowTracker = (*m_pFowTrackers)[hero->GetNetworkId()];
+		auto fowTracker = *std::find_if(m_pFowTrackers->begin(), m_pFowTrackers->end(), [&](const FowTracker& t)
+		{
+			return t.Unit()->GetNetworkId() == hero->GetNetworkId();
+		});
 
 		// Background
 		auto clr = Color(0, 0, 0);
@@ -83,7 +86,7 @@ auto SpellInfoBox::OnRender() -> void
 
 		char text[64]{ '\0' };
 
-		if (!fowTracker.InFow() || hero->IsVisible())
+		if (hero->IsVisible())
 			KDrawing::DrawString(Vec2(xPos + 5, (yPos + line * m_iLineHeight - lineTextOffset)),
 								 clr, true, "%s", hero->ChampionName());
 		else
@@ -111,15 +114,17 @@ auto SpellInfoBox::OnRender() -> void
 		// 3rd and 4th column
 		strcpy_s(text, "[RDY]");
 		auto column = 0U;
-		auto summoners = m_mapSummoners[hero->GetNetworkId()];
+		auto summoners = std::find_if(m_vecSummoners.begin(), m_vecSummoners.end(), [&](const summoners_t& t)
+		{
+			return t.m_iNetworkId == hero->GetNetworkId();
+		})->m_arrSummonerNames;
 
 		for (auto summoner : summoners)
 		{
 			auto slot = hero->GetSpellSlot(summoner);
 
-			auto texture = (*m_pTextures)[std::string(summoner)];
-			if (texture != nullptr)
-				texture->Draw(xPos + 180 + (column * 80), yPos + line * m_iLineHeight);
+			if (m_pTextures->find(std::string(summoner)) != m_pTextures->end())
+				(*m_pTextures)[std::string(summoner)]->Draw(xPos + 180 + (column * 80), yPos + line * m_iLineHeight);
 
 			auto rcd = hero->GetSpellRemainingCooldown(slot);
 			auto rcd2 = m_pCooldownManager->GetRemainingCooldown(hero->GetNetworkId(), slot);
@@ -149,8 +154,8 @@ auto SpellInfoBox::HandleDrag() const -> void
 
 	static auto isDragging = false;
 
-	POINT cursor;
-	GetCursorPos(&cursor);
+	POINT cursor{ 0 };
+	GUtility->GetCursorPosition(cursor);
 
 	auto x = m_pPosX->GetInteger();
 	auto y = m_pPosY->GetInteger();

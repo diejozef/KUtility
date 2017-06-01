@@ -2,7 +2,7 @@
 
 Passives::Passives(IMenu* parentMenu)
 {
-	m_pMenu = parentMenu->AddMenu("Passives");
+	m_pMenu = parentMenu->AddMenu("ku_passive_tracker");
 	m_pEnable = m_pMenu->CheckBox("Enable", false);
 	m_pDrawPassives = m_pMenu->CheckBox("Draw Passives", false);
 	m_pDrawRebirthPassives = m_pMenu->CheckBox("Draw Rebirth Passives", false);
@@ -73,10 +73,7 @@ auto Passives::OnRenderEnemy(IUnit* hero) -> void
 					{
 						auto w2s = Vec2(0.f, 0.f);
 						if (GGame->Projection(hero->GetPosition(), &w2s))
-						{
-							KDrawing::DrawString(Vec2(w2s.x, w2s.y + line * 12), Color::Yellow(), true, std::get<1>(item),
-												 rcd);
-						}
+							KDrawing::DrawString(Vec2(w2s.x, w2s.y + line * 12), Color::Yellow(), true, std::get<1>(item), rcd);
 					}
 				}
 			}

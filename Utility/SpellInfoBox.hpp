@@ -5,11 +5,24 @@
 #include "FowTracker.hpp"
 #include "CooldownManager.hpp"
 
+struct summoners_t
+{
+public:
+	summoners_t() { }
+	summoners_t(int networkId, std::array<const char*, 2> summoners) :
+		m_iNetworkId(networkId),
+		m_arrSummonerNames(summoners)
+	{ }
+
+	int m_iNetworkId;
+	std::array<const char*, 2> m_arrSummonerNames;
+};
+
 class SpellInfoBox
 {
 public:
 	explicit SpellInfoBox(IMenu* parentMenu,
-						  std::unordered_map<int, FowTracker>* trackers,
+						  std::vector<FowTracker>* trackers,
 						  std::unordered_map<std::string, ITexture*>* textures,
 						  InputManager* inputManager,
 						  CooldownManager* cooldownManager);
@@ -35,9 +48,9 @@ private:
 	CooldownManager* m_pCooldownManager;
 
 private:
-	std::unordered_map<int, FowTracker>* m_pFowTrackers;
+	std::vector<FowTracker>* m_pFowTrackers;
+	std::vector<summoners_t> m_vecSummoners;
 	std::unordered_map<std::string, ITexture*>* m_pTextures;
-	std::unordered_map<int, std::array<const char*, 2>> m_mapSummoners;
 
 	auto HandleDrag() const -> void;
 };

@@ -8,7 +8,7 @@ class ExtendedAwareness
 {
 public:
 	explicit ExtendedAwareness(IMenu* parentMenu, IUnit* player,
-							   std::unordered_map<int, FowTracker>* trackers,
+							   std::vector<FowTracker>* trackers,
 							   std::unordered_map<std::string, ITexture*>* textures);
 	~ExtendedAwareness();
 
@@ -34,6 +34,6 @@ private:
 	RecallManager* m_pRecallManager;
 
 private:
-	std::unordered_map<int, FowTracker>* m_pFowTrackers;
+	std::vector<FowTracker>* m_pFowTrackers;
 	std::unordered_map<std::string, ITexture*>* m_pTextures;
 };

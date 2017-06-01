@@ -3,7 +3,7 @@
 Ignite::Ignite(IMenu* parentMenu, eSpellSlot igniteSlot, IUnit* player) :
 	m_pPlayer(player)
 {
-	m_pMenu = parentMenu->AddMenu("Ignite");
+	m_pMenu = parentMenu->AddMenu("ku_auto_ignite");
 	m_pAutoIgnite = m_pMenu->CheckBox("Auto Use", false);
 	m_pAutoIgnitePercentage = m_pMenu->AddInteger("Auto Use on % HP", 0, 30, 0);
 

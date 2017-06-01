@@ -15,6 +15,7 @@ public:
 
 public:
 	auto GetRemainingCooldown(int networkId, int slot) -> float;
+	auto GetTotalCooldown(int networkId, int slot) -> float;
 
 private:
 	IUnit* m_pPlayer;

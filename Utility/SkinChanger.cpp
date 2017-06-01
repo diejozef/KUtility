@@ -3,8 +3,8 @@
 SkinChanger::SkinChanger(IMenu* parentMenu, IUnit* player) :
 	m_pPlayer(player)
 {
-	char text[64];
-	sprintf_s(text, "Skin Changer - %s", m_pPlayer->ChampionName());
+	char text[64]{ '\0' };
+	sprintf_s(text, "ku_skin_changer - %s", m_pPlayer->ChampionName());
 	m_pMenu = parentMenu->AddMenu(text);
 
 	m_pEnable = m_pMenu->CheckBox("Enable", false);

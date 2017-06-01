@@ -16,8 +16,24 @@ Utility::Utility(IUnit* player) :
 	m_pActivator = new Activator(m_pMenu, m_pPlayer, m_pInputManager);
 	m_pAutoMute = new AutoMute(m_pMenu);
 	m_pSkinChanger = new SkinChanger(m_pMenu, m_pPlayer);
+	m_pAutoPing = new AutoPing(m_pMenu, m_pInputManager);
+	m_pLastHitHelper = new LastHitHelper(m_pMenu, m_pPlayer);
 
 	GRender->NotificationEx(Color::LightBlue().Get(), 2, true, true, "KUtility loaded!");
+
+	if (!GUtility->DoesDirectoryExist("Textures\\KUtility"))
+	{
+		GGame->PrintChat("[KUtility/Ctor] Texture folder not found: Textures/KUtility");
+		GGame->PrintChat("[KUtility/Ctor] Trying to create folder...");
+
+		if (GUtility->CreateNewDirectory("Textures\\KUtility"))
+		{
+			GGame->PrintChat("[KUtility/Ctor] Folder has been successfully created.");
+			GGame->PrintChat("[KUtility/Ctor] Please make sure you have all the texture files.");
+		}
+		else
+			GGame->PrintChat("[KUtility/Ctor] Couldn't create folder, you'll have to do it manually.");
+	}
 }
 
 Utility::~Utility()
@@ -29,6 +45,8 @@ Utility::~Utility()
 	_delete(m_pActivator);
 	_delete(m_pAutoMute);
 	_delete(m_pSkinChanger);
+	_delete(m_pAutoPing);
+	_delete(m_pLastHitHelper);
 	_delete(m_pInputManager);
 
 	m_pMenu->SaveSettings();
@@ -37,11 +55,12 @@ Utility::~Utility()
 
 auto Utility::OnGameUpdate() -> void
 {
-	m_pSpellManager->OnUpdate();
 	m_pActivator->OnUpdate();
+	m_pSpellManager->OnUpdate();
 	m_pDrawManager->OnUpdate();
 	m_pJungleManager->OnUpdate();
 	m_pSkinChanger->OnUpdate();
+	m_pAutoPing->OnUpdate();
 }
 
 auto Utility::OnRender() -> void
@@ -51,11 +70,6 @@ auto Utility::OnRender() -> void
 	m_pDrawManager->OnRender();
 	m_pActivator->OnRender();
 	m_pJungleManager->OnRender();
-}
-
-auto Utility::OnRender2() -> void
-{
-
 }
 
 auto Utility::OnCreateObject(IUnit* object) -> void
@@ -130,6 +144,11 @@ auto Utility::OnTeleport(OnTeleportArgs* data) -> void
 	m_pDrawManager->OnTeleport(data);
 }
 
+auto Utility::OnGetAutoAttackDamage(OnGetAutoAttackDamageArgs* data) -> float
+{
+	return m_pLastHitHelper->OnGetAutoAttackDamage(data);
+}
+
 auto Utility::OnWndProc(HWND wnd, UINT message, WPARAM wparam, LPARAM lparam) -> bool
 {
 	return m_pInputManager->OnWndProc(wnd, message, wparam, lparam);
@@ -137,6 +156,7 @@ auto Utility::OnWndProc(HWND wnd, UINT message, WPARAM wparam, LPARAM lparam) ->
 
 auto Utility::OnSpellCast(const CastedSpell& spell) -> void
 {
+	m_pActivator->OnSpellCast(spell);
 	m_pSpellManager->OnSpellCast(spell);
 	m_pWardManager->OnSpellCast(spell);
 }

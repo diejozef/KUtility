@@ -3,7 +3,7 @@
 
 /*
 KUtility by Kätten
-credits to Optix, Tsuhgi and jQuery
+credits to Optix, Tsuhgi, Trees and jQuery
 */
 
 PluginSetup("KUtility")
@@ -16,11 +16,6 @@ PLUGIN_EVENT(void) OnGameUpdate()
 PLUGIN_EVENT(void) OnRender()
 {
 	g_pUtility->OnRender();
-}
-
-PLUGIN_EVENT(void) OnRender2()
-{
-	g_pUtility->OnRender2();
 }
 
 PLUGIN_EVENT(void) OnEnterFow(IUnit* unit)
@@ -73,6 +68,11 @@ PLUGIN_EVENT(void) OnTeleport(OnTeleportArgs* data)
 	g_pUtility->OnTeleport(data);
 }
 
+PLUGIN_EVENT(float) OnGetAutoAttackDamage(OnGetAutoAttackDamageArgs* data)
+{
+	return g_pUtility->OnGetAutoAttackDamage(data);
+}
+
 PLUGIN_EVENT(bool) OnWndProc(HWND wnd, UINT message, WPARAM wparam, LPARAM lparam)
 {
 	return g_pUtility->OnWndProc(wnd, message, wparam, lparam);
@@ -99,6 +99,7 @@ PLUGIN_API void OnLoad(IPluginSDK* sdk)
 	GEventManager->AddEventHandler(kEventOnJungleNotification, OnJungleNotify);
 	GEventManager->AddEventHandler(kEventOnWndProc, OnWndProc);
 	GEventManager->AddEventHandler(kEventOnTeleport, OnTeleport);
+	GEventManager->AddEventHandler(kEventOnGetAutoAttackDamage, OnGetAutoAttackDamage);
 }
 
 PLUGIN_API void OnUnload()
@@ -116,6 +117,7 @@ PLUGIN_API void OnUnload()
 	GEventManager->RemoveEventHandler(kEventOnJungleNotification, OnJungleNotify);
 	GEventManager->RemoveEventHandler(kEventOnWndProc, OnWndProc);
 	GEventManager->RemoveEventHandler(kEventOnTeleport, OnTeleport);
+	GEventManager->RemoveEventHandler(kEventOnGetAutoAttackDamage, OnGetAutoAttackDamage);
 
 	_delete(g_pUtility);
 }

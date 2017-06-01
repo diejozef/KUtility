@@ -3,7 +3,7 @@
 TurretRanges::TurretRanges(IMenu* parentMenu, IUnit* player) :
 	m_pPlayer(player)
 {
-	m_pMenu = parentMenu->AddMenu("Turret Ranges");
+	m_pMenu = parentMenu->AddMenu("ku_turret_range");
 	m_pEnable = m_pMenu->CheckBox("Enable", false);
 	m_pDynamicColor = m_pMenu->CheckBox("Dynamic Color", false);
 }

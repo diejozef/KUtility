@@ -1,13 +1,13 @@
 #include "ExtendedAwareness.hpp"
 
 ExtendedAwareness::ExtendedAwareness(IMenu* parentMenu, IUnit* player,
-									 std::unordered_map<int, FowTracker>* trackers,
+									 std::vector<FowTracker>* trackers,
 									 std::unordered_map<std::string, ITexture*>* textures) :
 	m_pPlayer(player),
 	m_pFowTrackers(trackers),
 	m_pTextures(textures)
 {
-	m_pMenu = parentMenu->AddMenu("Extended Awareness");
+	m_pMenu = parentMenu->AddMenu("ku_extended_awareness");
 	m_pEnable = m_pMenu->CheckBox("Enable", false);
 	m_pUseIcons = m_pMenu->CheckBox("Use Icons", false);
 	m_pDrawIndicatorRange = m_pMenu->CheckBox("Draw Indicator Range", false);
@@ -30,7 +30,11 @@ auto ExtendedAwareness::OnRenderEnemy(IUnit* hero) -> void
 	if (!m_pEnable->Enabled() || hero->IsDead() || hero->IsOnScreen())
 		return;
 
-	auto fowTracker = (*m_pFowTrackers)[hero->GetNetworkId()];
+	auto fowTracker = *std::find_if(m_pFowTrackers->begin(), m_pFowTrackers->end(), [&](const FowTracker& t)
+	{
+		return t.Unit()->GetNetworkId() == hero->GetNetworkId();
+	});
+
 	auto distanceSqr = (hero->GetPosition() - m_pPlayer->GetPosition()).Length2DSqr();
 	auto timeSinceLastSeen = GGame->Time() - fowTracker.Time();
 
@@ -87,14 +91,16 @@ auto ExtendedAwareness::OnRenderEnemy(IUnit* hero) -> void
 			else
 			{
 				auto pct = 1.0f - distanceSqr / _sqr(m_pMaxDistance->GetInteger());
-				auto texture = (*m_pTextures)[std::string(hero->ChampionName())];
-				auto border = (*m_pTextures)["KUtil_Circle"];
 				auto r = m_pIconMaxSize->GetInteger() * pct;
 
 				r = std::max(r, static_cast<float>(m_pIconMinSize->GetInteger()));
 
-				if (texture != nullptr && border != nullptr)
+				if (m_pTextures->find(std::string(hero->ChampionName())) != m_pTextures->end() && 
+					m_pTextures->find("KUtil_Circle") != m_pTextures->end())
 				{
+					auto texture = (*m_pTextures)[std::string(hero->ChampionName())];
+					auto border = (*m_pTextures)["KUtil_Circle"];
+
 					texture->DrawCircle(drawPos.x, drawPos.y, r);
 
 					auto color = fowTracker.InFow() ? Color::LightGrey() :

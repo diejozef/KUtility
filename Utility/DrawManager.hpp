@@ -15,6 +15,7 @@
 #include "RecallManager.hpp"
 #include "ExtendedAwareness.hpp"
 #include "CooldownManager.hpp"
+#include "Buildings.hpp"
 
 class DrawManager
 {
@@ -30,7 +31,6 @@ public:
 	auto OnCreateObject(IUnit* object) -> void;
 	auto OnDestroyObject(IUnit* object) -> void;
 	auto OnTeleport(OnTeleportArgs* data) -> void;
-	auto OnRender2() -> void;
 
 private:
 	IMenu* m_pMenu;
@@ -50,8 +50,9 @@ private:
 	Clones* m_pClones;
 	AARange* m_pAARange;
 	ExtendedAwareness* m_pExtendedAwareness;
+	Buildings* m_pBuildings;
 
 private:
-	std::unordered_map<int, FowTracker> m_mapFowTrackers;
+	std::vector<FowTracker> m_vecFowTrackers;
 	std::unordered_map<std::string, ITexture*> m_mapTextures;
 };

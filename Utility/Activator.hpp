@@ -6,7 +6,11 @@
 #include "AutoBuy.hpp"
 #include "AutoLevelUp.hpp"
 #include "Lantern.hpp"
+#include "SpellBlock.hpp"
+#include "Potions.hpp"
 #include "InputManager.hpp"
+#include "Support.hpp"
+#include "Defensives.hpp"
 
 class Activator
 {
@@ -20,6 +24,7 @@ public:
 	auto OnLevelUp(IUnit* source, int level) -> void;
 	auto OnCreateObject(IUnit* object) -> void;
 	auto OnDestroyObject(IUnit* object) -> void;
+	auto OnSpellCast(const CastedSpell& spell) -> void;
 
 private:
 	IMenu* m_pMenu;
@@ -38,6 +43,10 @@ private:
 	AutoBuy* m_pAutoBuy;
 	AutoLevelUp* m_pAutoLevelUp;
 	Lantern* m_pLantern;
+	SpellBlock* m_pSpellBlock;
+	Potions* m_pPotions;
+	Support* m_pSupport;
+	Defensives* m_pDefensives;
 
 private:
 	auto GetSmite()->eSpellSlot;

@@ -124,7 +124,6 @@ auto InputEventManager::RemoveMouseEventListener(eMouseButton button, size_t id)
 auto InputEventManager::OnKeyInput(uint8_t key, eInputEventType type) -> void
 {
 	auto entry = m_mapKeyEvents[key];
-
 	if (entry.empty())
 		return;
 
@@ -138,7 +137,6 @@ auto InputEventManager::OnKeyInput(uint8_t key, eInputEventType type) -> void
 auto InputEventManager::OnMouseInput(eMouseButton button, eInputEventType type) -> void
 {
 	auto entry = m_mapMouseEvents[button];
-
 	if (entry.empty())
 		return;
 

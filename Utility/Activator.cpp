@@ -5,9 +5,10 @@ Activator::Activator(IMenu* parentMenu, IUnit* player, InputManager* inputManage
 	m_pInputManager(inputManager),
 	m_pSmite(nullptr),
 	m_pIgnite(nullptr),
-	m_pLantern(nullptr)
+	m_pLantern(nullptr),
+	m_pSpellBlock(nullptr)
 {
-	m_pMenu = parentMenu->AddMenu("Activator");
+	m_pMenu = parentMenu->AddMenu("ku_activator");
 
 	auto smiteSlot = GetSmite();
 	m_bHasSmite = (smiteSlot != kSlotUnknown);
@@ -22,15 +23,23 @@ Activator::Activator(IMenu* parentMenu, IUnit* player, InputManager* inputManage
 	m_pCleanse = new Cleanse(m_pMenu, m_pPlayer);
 	m_pAutoBuy = new AutoBuy(m_pMenu, m_pPlayer);
 	m_pAutoLevelUp = new AutoLevelUp(m_pMenu, m_pPlayer);
+	m_pPotions = new Potions(m_pMenu, m_pPlayer);
+	m_pSupport = new Support(m_pMenu, m_pPlayer);
+	m_pDefensives = new Defensives(m_pMenu, m_pPlayer);
 
 	auto allies = GEntityList->GetAllHeros(true, false);
-	m_bThresh = std::count_if(allies.begin(), allies.end(), [](IUnit* ally)
+	m_bThresh = std::find_if(allies.begin(), allies.end(), [](IUnit* ally)
 	{
 		return !strcmp(ally->ChampionName(), "Thresh");
-	}) > 0;
+	}) != allies.end();
 
 	if (m_bThresh)
 		m_pLantern = new Lantern(m_pMenu, m_pPlayer, m_pInputManager);
+
+	if (!strcmp(m_pPlayer->ChampionName(), "Fiora"))
+		m_pSpellBlock = new SpellBlock(m_pMenu, m_pPlayer, kSpellBlockFiora);
+	else if (!strcmp(m_pPlayer->ChampionName(), "Sivir"))
+		m_pSpellBlock = new SpellBlock(m_pMenu, m_pPlayer, kSpellBlockSivir);
 }
 
 Activator::~Activator()
@@ -44,9 +53,15 @@ Activator::~Activator()
 	if (m_pLantern != nullptr)
 		_delete(m_pLantern);
 
+	if (m_pSpellBlock != nullptr)
+		_delete(m_pSpellBlock);
+
 	_delete(m_pCleanse);
 	_delete(m_pAutoBuy);
 	_delete(m_pAutoLevelUp);
+	_delete(m_pPotions);
+	_delete(m_pSupport);
+	_delete(m_pDefensives);
 
 	m_pMenu->Remove();
 }
@@ -71,13 +86,20 @@ auto Activator::OnUpdate() -> void
 	if (m_bThresh)
 		m_pLantern->OnUpdate();
 
+	if (m_pSpellBlock)
+		m_pSpellBlock->OnUpdate();
+
 	m_pCleanse->OnUpdate();
+	m_pSupport->OnUpdate();
+	m_pDefensives->OnUpdate();
 	m_pAutoBuy->OnUpdate();
+	m_pPotions->OnUpdate();
 }
 
 auto Activator::OnBuffAdd(IUnit* source, void* data) -> void
 {
 	m_pCleanse->OnBuffAdd(source, data);
+	m_pSupport->OnBuffAdd(source, data);
 }
 
 auto Activator::OnLevelUp(IUnit* source, int level) -> void
@@ -95,6 +117,14 @@ auto Activator::OnDestroyObject(IUnit* object) -> void
 {
 	if (m_bThresh)
 		m_pLantern->OnDestroyObject(object);
+}
+
+auto Activator::OnSpellCast(const CastedSpell& spell) -> void
+{
+	if (m_pSpellBlock)
+		m_pSpellBlock->OnSpellCast(spell);
+
+	m_pDefensives->OnSpellCast(spell);
 }
 
 auto Activator::GetSmite() -> eSpellSlot

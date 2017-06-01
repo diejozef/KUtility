@@ -5,7 +5,7 @@ Lantern::Lantern(IMenu* parentMenu, IUnit* player, InputManager* inputManager) :
 	m_pInputManager(inputManager),
 	m_pLantern(nullptr)
 {
-	m_pMenu = parentMenu->AddMenu("Auto Lantern");
+	m_pMenu = parentMenu->AddMenu("ku_auto_lantern");
 	m_pEnable = m_pMenu->CheckBox("Enable", false);
 	m_pAutoGrab = m_pMenu->CheckBox("AutoGrab", false);
 	m_pDrawStatus = m_pMenu->CheckBox("Draw AutoGrab Status", false);

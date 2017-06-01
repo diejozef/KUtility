@@ -2,7 +2,7 @@
 
 AutoMute::AutoMute(IMenu* parentMenu)
 {
-	m_pMenu = parentMenu->AddMenu("Auto Mute");
+	m_pMenu = parentMenu->AddMenu("ku_auto_mute");
 	m_pAutoMuteAllies = m_pMenu->CheckBox("Auto Mute Allies", false);
 	m_pAutoMuteEnemies = m_pMenu->CheckBox("Auto Mute Enemies", false);
 

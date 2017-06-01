@@ -4,7 +4,7 @@ SpellTracker::SpellTracker(IMenu* parentMenu, IUnit* player, CooldownManager* co
 	m_pPlayer(player),
 	m_pCooldownManager(cooldownManager)
 {
-	m_pMenu = parentMenu->AddMenu("Spell Tracker");
+	m_pMenu = parentMenu->AddMenu("ku_spell_tracker");
 	m_pEnable = m_pMenu->CheckBox("Enable", false);
 	m_pDrawTimer = m_pMenu->CheckBox("Draw Timer", false);
 	m_pDrawAllies = m_pMenu->CheckBox("Draw Allies", false);
@@ -15,37 +15,36 @@ SpellTracker::SpellTracker(IMenu* parentMenu, IUnit* player, CooldownManager* co
 	auto summonerSpellName = std::string("");
 
 	// load summoner spell icons with correct size
-	auto enemies = GEntityList->GetAllHeros(false, true);
+	auto enemies = GEntityList->GetAllHeros(true, true);
 	std::for_each(enemies.begin(), enemies.end(), [&](IUnit* hero)
 	{
 		for (auto i = static_cast<int>(kSlotSummoner1); i <= static_cast<int>(kSlotSummoner2); i++)
 		{
 			summonerSpellName = std::string(hero->GetSpellName(i));
-			sprintf_s(fileName, "%s.png", summonerSpellName.c_str());
+			sprintf_s(fileName, "KUtility\\%s.png", summonerSpellName.c_str());
 
 			if (m_mapTextures.find(summonerSpellName) == m_mapTextures.end())
 			{
-				auto texture = GRender->CreateTextureFromFile(fileName);
-				auto size = texture->GetSize();
-
-				if (size.y < 1.0f || size.x < 1.0f)
+				if (GUtility->DoesFileExist(std::string("Textures\\" + std::string(fileName)).c_str()))
 				{
-					char text[64];
-					sprintf_s(text, "[KUtility/ST] Missing texture: %s", fileName);
-					GGame->PrintChat(text);
+					auto texture = GRender->CreateTextureFromFile(fileName);
+					texture->Resize(10, 10);
+
+					m_mapTextures[summonerSpellName] = texture;
 				}
 				else
 				{
-					texture->Resize(10, 10);
-					m_mapTextures[summonerSpellName] = texture;
+					char text[64]{ '\0' };
+					sprintf_s(text, "[KUtility/ST/1] Missing texture: %s", fileName);
+					GGame->PrintChat(text);
 				}
 			}
 		}
 	});
 
 	std::array<std::pair<std::string, std::string>, 2> extraTextures{
-		std::make_pair("S5_SummonerSmiteDuel", "S5_SummonerSmiteDuel.png"),
-		std::make_pair("S5_SummonerSmitePlayerGanker", "S5_SummonerSmitePlayerGanker.png")
+		std::make_pair("S5_SummonerSmiteDuel", "KUtility\\S5_SummonerSmiteDuel.png"),
+		std::make_pair("S5_SummonerSmitePlayerGanker", "KUtility\\S5_SummonerSmitePlayerGanker.png")
 	};
 
 	for (const auto& textureName : extraTextures)
@@ -53,19 +52,20 @@ SpellTracker::SpellTracker(IMenu* parentMenu, IUnit* player, CooldownManager* co
 		if (m_mapTextures.find(std::get<0>(textureName)) != m_mapTextures.end())
 			continue;
 
-		auto texture = GRender->CreateTextureFromFile(std::get<1>(textureName).c_str());
-		auto size = texture->GetSize();
+		auto fileName = std::get<1>(textureName).c_str();
 
-		if (size.y < 1.0f || size.x < 1.0f)
+		if (GUtility->DoesFileExist(std::string("Textures\\" + std::string(fileName)).c_str()))
 		{
-			char text[64];
-			sprintf_s(text, "[KUtility/DM] Missing texture: %s", std::get<1>(textureName).c_str());
-			GGame->PrintChat(text);
+			auto texture = GRender->CreateTextureFromFile(fileName);
+			texture->Resize(10, 10);
+
+			m_mapTextures[std::get<0>(textureName)] = texture;
 		}
 		else
 		{
-			texture->Resize(10, 10);
-			m_mapTextures[std::get<0>(textureName)] = texture;
+			char text[64]{ '\0' };
+			sprintf_s(text, "[KUtility/ST/2] Missing texture: %s", fileName);
+			GGame->PrintChat(text);
 		}
 	}
 }
@@ -77,7 +77,8 @@ SpellTracker::~SpellTracker()
 
 auto SpellTracker::OnRenderHero(IUnit* hero) -> void
 {
-	if (!m_pEnable->Enabled() || hero->IsDead() || !hero->IsVisible() || hero == m_pPlayer || !hero->IsHpBarBeingRendered())
+	if (!m_pEnable->Enabled() || hero->IsDead() || !hero->IsVisible() || 
+		hero->GetNetworkId() == m_pPlayer->GetNetworkId() || !hero->IsHpBarBeingRendered())
 		return;
 
 	if (!m_pDrawAllies->Enabled() && !hero->IsEnemy(m_pPlayer))
@@ -152,13 +153,13 @@ auto SpellTracker::OnRenderHero(IUnit* hero) -> void
 
 		auto column = 0;
 
-		for (auto i = 0U; i < 4; i++)
+		for (auto i = static_cast<int>(kSlotQ); i < static_cast<int>(kSlotSummoner1); i++)
 		{
 			auto cd = hero->GetSpellTotalCooldown(i);
 			auto rcd = hero->GetSpellRemainingCooldown(i);
 
 			auto spellbook = hero->GetSpellBook();
-			if (spellbook->GetMaxAmmo(i) != -1 && spellbook->GetAmmo(i) == 0) // spell is recharging
+			if (spellbook != nullptr && spellbook->GetMaxAmmo(i) != -1 && spellbook->GetAmmo(i) == 0) // spell is recharging
 				cd = spellbook->GetAmmoRechargeTime(i);
 
 			auto percentage = cd > 0.0f && rcd > 0.0f ? 1.0f - rcd / cd : 1.0f;

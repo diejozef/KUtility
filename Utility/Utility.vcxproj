@@ -30,7 +30,7 @@
     <ProjectGuid>{F27ADD4A-44A9-4B6B-8C84-D61324BA6177}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Utility</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -152,7 +152,7 @@
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>Full</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;UTILITY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -165,7 +165,6 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <AdditionalIncludeDirectories>$(ProjectDir)\SDK\</AdditionalIncludeDirectories>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <AdditionalOptions>/std:c++latest /vmb %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -240,6 +239,12 @@
     <ClCompile Include="AutoBuy.cpp" />
     <ClCompile Include="AutoLevelUp.cpp" />
     <ClCompile Include="AutoMute.cpp" />
+    <ClCompile Include="AutoPing.cpp" />
+    <ClCompile Include="Defensives.cpp" />
+    <ClCompile Include="Buildings.cpp" />
+    <ClCompile Include="LastHitHelper.cpp" />
+    <ClCompile Include="Support.cpp" />
+    <ClCompile Include="Potions.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Clicks.cpp" />
     <ClCompile Include="Clones.cpp" />
@@ -264,6 +269,8 @@
     <ClCompile Include="SDK\SpellDatabase.cpp" />
     <ClCompile Include="SkinChanger.cpp" />
     <ClCompile Include="Smite.cpp" />
+    <ClCompile Include="SpellBlock.cpp" />
+    <ClCompile Include="SpellBlockDatabase.cpp" />
     <ClCompile Include="SpellInfoBox.cpp" />
     <ClCompile Include="SpellManager.cpp" />
     <ClCompile Include="Spells.cpp" />
@@ -279,6 +286,12 @@
     <ClInclude Include="AutoBuy.hpp" />
     <ClInclude Include="AutoLevelUp.hpp" />
     <ClInclude Include="AutoMute.hpp" />
+    <ClInclude Include="AutoPing.hpp" />
+    <ClInclude Include="Defensives.hpp" />
+    <ClInclude Include="Buildings.hpp" />
+    <ClInclude Include="LastHitHelper.hpp" />
+    <ClInclude Include="Support.hpp" />
+    <ClInclude Include="Potions.hpp" />
     <ClInclude Include="BoundingBox.hpp" />
     <ClInclude Include="Clicks.hpp" />
     <ClInclude Include="Clones.hpp" />
@@ -306,6 +319,8 @@
     <ClInclude Include="SDK\Vector.hpp" />
     <ClInclude Include="SkinChanger.hpp" />
     <ClInclude Include="Smite.hpp" />
+    <ClInclude Include="SpellBlock.hpp" />
+    <ClInclude Include="SpellBlockDatabase.hpp" />
     <ClInclude Include="SpellInfoBox.hpp" />
     <ClInclude Include="SpellManager.hpp" />
     <ClInclude Include="Spells.hpp" />

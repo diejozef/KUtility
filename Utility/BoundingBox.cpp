@@ -2,7 +2,7 @@
 
 BoundingBox::BoundingBox(IMenu* parentMenu)
 {
-	m_pMenu = parentMenu->AddMenu("Bounding Box");
+	m_pMenu = parentMenu->AddMenu("ku_boundingbox");
 	m_pEnable = m_pMenu->CheckBox("Enable", false);
 }
 
