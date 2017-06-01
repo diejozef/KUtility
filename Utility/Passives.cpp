@@ -6,7 +6,7 @@ Passives::Passives(IMenu* parentMenu)
 	m_pEnable = m_pMenu->CheckBox("Enable", false);
 	m_pDrawPassives = m_pMenu->CheckBox("Draw Passives", false);
 	m_pDrawRebirthPassives = m_pMenu->CheckBox("Draw Rebirth Passives", false);
-	m_pDrawItemCooldowns = m_pMenu->CheckBox("Draw Item Cooldowns", false);
+	//m_pDrawItemCooldowns = m_pMenu->CheckBox("Draw Item Cooldowns", false);
 }
 
 Passives::~Passives()
@@ -60,7 +60,7 @@ auto Passives::OnRenderEnemy(IUnit* hero) -> void
 		}
 	}
 
-	if (m_pDrawItemCooldowns->Enabled())
+	/*if (m_pDrawItemCooldowns->Enabled())
 	{
 		for (const auto& item : items)
 		{
@@ -78,7 +78,7 @@ auto Passives::OnRenderEnemy(IUnit* hero) -> void
 				}
 			}
 		}
-	}
+	}*/
 
 	if (m_pDrawRebirthPassives->Enabled())
 	{
