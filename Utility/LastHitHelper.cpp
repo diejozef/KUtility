@@ -44,19 +44,19 @@ auto LastHitHelper::OnGetAutoAttackDamage(OnGetAutoAttackDamageArgs* data) -> fl
 		dmg += 5.0f;
 
 	if (m_pPlayer->HasItemId(kRecurveBow))
-		dmg += 10.0f;
+		dmg += 15.0f;
 
 	if(m_pPlayer->HasItemId(kGuinsoosRageblade))
-		dmg += 10.0f;
+		dmg += 15.0f;
 
 	if(m_pPlayer->HasItemId(kBladeOfTheRuinedKing))
-		dmg += 10.0f;
+		dmg += 15.0f;
 
 	if (m_pPlayer->HasItemId(kNashorsTooth))
-		dmg += 10.0f;
+		dmg += 15.0f;
 
 	if (m_pPlayer->HasItemId(kWitsEnd))
-		dmg += 35.0f;
+		dmg += 40.0f;
 
 	if (m_pPlayer->GetBuffCount("itemstatikshankcharge") == 100)
 	{
@@ -64,6 +64,15 @@ auto LastHitHelper::OnGetAutoAttackDamage(OnGetAutoAttackDamageArgs* data) -> fl
 			m_pPlayer->HasItemId(kRapidFirecannon))
 			dmg += 35.0f;
 	}
+
+	std::vector<HeroMastery> masteries;
+	m_pPlayer->GetMasteries(masteries);
+	
+	if (std::find_if(masteries.begin(), masteries.end(), [](const HeroMastery& mastery)
+	{
+		return mastery.PageId == 150 && mastery.MasteryId == 66;
+	}) != masteries.end())
+		dmg += 5.0f;
 
 	return dmg;
 }
