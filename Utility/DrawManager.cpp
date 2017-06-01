@@ -126,12 +126,6 @@ DrawManager::~DrawManager()
 
 auto DrawManager::OnRender() -> void
 {
-	auto texture = m_mapTextures["Zilean"];
-	if (texture != nullptr)
-	{
-		m_mapTextures["Zilean"]->Draw(6, 6);
-	}
-
 	for (auto hero : GEntityList->GetAllHeros(true, true))
 	{
 		if (hero->IsEnemy(m_pPlayer))
